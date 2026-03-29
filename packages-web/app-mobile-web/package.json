@@ -7,9 +7,5 @@
   "scripts": {
     "build": "vite build"
   },
-  "peerDependencies": {
-    "react": ">=19.1.0",
-    "react-native": ">=0.81.5",
-    "expo": ">=54.0.23"
-  }
+  "peerDependencies": {}
 }

@@ -110,7 +110,7 @@ class LeftMenu extends PureComponent {
     const imageHeight = nullAvatar ? 80 : AVATAR_SIZE
 
     return (
-      <View style={[styles.topContainer, { height: 80 + getSafeAreaInsets().top, paddingTop: getSafeAreaInsets().top }]}>
+      <View style={[styles.topContainer, { height: 80 + getSafeAreaInsets().top, paddingTop: getSafeAreaInsets().top, paddingVertical: 10 }]}>
         <View style={styles.avatarWrapper}>
           <Image source={{ uri: img_path }} style={[styles.avatar, { height: imageHeight }]} />
         </View>

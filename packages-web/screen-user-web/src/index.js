@@ -39,6 +39,7 @@ export default function ViewPlaceComponent(props) {
       dispatch: store.dispatch,
       chatServiceGet: services.chatServiceGet,
       chatServicePost: services.chatServicePost,
+      rtkQuery: services.rtkQuery,
       withRouter: utils.withRouter,
       t: utils.t,
       theme: utils.theme,

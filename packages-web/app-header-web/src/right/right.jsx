@@ -104,8 +104,6 @@ class RightComponent extends PureComponent {
       let data = {}
 
       dispatch(appApi.endpoints.getUserCross.initiate(true)).then(() => {
-        this.setState({ loadingExit: true })
-
         data.filter = {
           selectedCountry: currentCategory.default_id_filter_root,
           selectedHotel: '-1',
@@ -138,29 +136,27 @@ class RightComponent extends PureComponent {
 
         data.user = {}
 
-        this.setState({ isOpenDialog: false }, () => {
-          firebase
-            .auth()
-            .signOut()
-            .then(function () {
-              setCategories([])
-              setAllCountries([])
-              setAllAgent([])
+        firebase
+          .auth()
+          .signOut()
+          .then(function () {
+            setCategories([])
+            setAllCountries([])
+            setAllAgent([])
 
-              setUser({})
-              setAgentTowns([])
-              changeOfflineMode(false)
+            setUser({})
+            setAgentTowns([])
+            changeOfflineMode(false)
 
-              logOut(data)
+            logOut(data)
 
-              changeMyRatingLocal([])
-              changeMyRatingServer([])
-              history('/')
-            })
-            .catch(function (error) {
-              console.log(error)
-            })
-        })
+            changeMyRatingLocal([])
+            changeMyRatingServer([])
+            history('/')
+          })
+          .catch(function (error) {
+            console.log(error)
+          })
       })
     }
 

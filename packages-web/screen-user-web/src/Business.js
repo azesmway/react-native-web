@@ -216,7 +216,7 @@ class Business extends PureComponent {
             </ListItem.Content>
             <Switch
               value={noteVerify}
-              onChange={() => {
+              onValueChange={() => {
                 this.handlePhoneVerify('note', !noteVerify).then()
               }}
             />
@@ -251,7 +251,7 @@ class Business extends PureComponent {
             </ListItem.Content>
             <Switch
               value={landingVerify}
-              onChange={() => {
+              onValueChange={() => {
                 this.handlePhoneVerify('landing', !landingVerify).then()
               }}
             />

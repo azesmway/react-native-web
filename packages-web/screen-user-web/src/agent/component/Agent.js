@@ -65,7 +65,7 @@ class Agent extends PureComponent {
               </ListItem.Content>
               <Switch
                 value={passwordVerify}
-                onChange={() => {
+                onValueChange={() => {
                   this.setState({ passwordVerify: !passwordVerify })
                   this.handlePasswordVerify(!passwordVerify)
                 }}
@@ -112,7 +112,7 @@ class Agent extends PureComponent {
                   style={{ paddingTop: 10, paddingBottom: 10, fontSize: 17, backgroundColor: 'transparent', color: txt }}
                 />
               </ListItem.Content>
-              <Switch value={false} disabled={true} onChange={() => {}} />
+              <Switch value={false} disabled={true} onValueChange={() => {}} />
             </ListItem>
           </Card>
         </View>
