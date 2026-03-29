@@ -1,0 +1,39 @@
+diff --git a/node_modules/react-native-ratings/dist/SwipeRating.js b/node_modules/react-native-ratings/dist/SwipeRating.js
+index 5fc736d..6c09adf 100644
+--- a/node_modules/react-native-ratings/dist/SwipeRating.js
++++ b/node_modules/react-native-ratings/dist/SwipeRating.js
+@@ -234,7 +234,7 @@ export default class SwipeRating extends Component {
+         const color = ratingTextColor || TYPES[type].color;
+         return (<View style={styles.showRatingView}>
+         <View style={styles.ratingView}>
+-          <Text style={[styles.ratingText, { color }]}>Rating: </Text>
++          {/*<Text style={[styles.ratingText, { color }]}>Rating: </Text>*/}
+           <Text style={[styles.currentRatingText, { color }]}>
+             {this.getCurrentRating(this.state.value)}
+           </Text>
+diff --git a/node_modules/react-native-ratings/package.json b/node_modules/react-native-ratings/package.json
+index 5952fad..53467fd 100644
+--- a/node_modules/react-native-ratings/package.json
++++ b/node_modules/react-native-ratings/package.json
+@@ -2,7 +2,7 @@
+   "name": "react-native-ratings",
+   "version": "8.1.0",
+   "description": "The standard Ratings component for React Native",
+-  "main": "./dist/index.js",
++  "main": "./src/index.tsx",
+   "types": "./dist/index.d.ts",
+   "repository": {
+     "type": "git",
+diff --git a/node_modules/react-native-ratings/src/SwipeRating.tsx b/node_modules/react-native-ratings/src/SwipeRating.tsx
+index b40d540..1c39efc 100644
+--- a/node_modules/react-native-ratings/src/SwipeRating.tsx
++++ b/node_modules/react-native-ratings/src/SwipeRating.tsx
+@@ -455,7 +455,7 @@ export default class SwipeRating extends Component<
+     return (
+       <View style={styles.showRatingView}>
+         <View style={styles.ratingView}>
+-          <Text style={[styles.ratingText, { color }]}>Rating: </Text>
++          {/*<Text style={[styles.ratingText, { color }]}>Rating: </Text>*/}
+           <Text style={[styles.currentRatingText, { color }]}>
+             {this.getCurrentRating( this.state.value )}
+           </Text>

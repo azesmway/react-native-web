@@ -1,0 +1,44 @@
+diff --git a/node_modules/react-native-curved-bottom-bar/lib/typescript/CurvedBottomBar/index.d.ts b/node_modules/react-native-curved-bottom-bar/lib/typescript/CurvedBottomBar/index.d.ts
+index 9f39d79..9696b8b 100644
+--- a/node_modules/react-native-curved-bottom-bar/lib/typescript/CurvedBottomBar/index.d.ts
++++ b/node_modules/react-native-curved-bottom-bar/lib/typescript/CurvedBottomBar/index.d.ts
+@@ -1,5 +1,6 @@
+ /// <reference types="react" />
+ import { ICurvedBottomBarRef } from './components/BottomBarView/model';
++
+ declare const CurvedBottomBar: {
+     Navigator: import("react").ForwardRefExoticComponent<Pick<import("./components/BottomBarView/model").NavigatorBottomBarProps, "borderColor" | "borderWidth" | "height" | "width" | "children" | "id" | "style" | "bgColor" | "type" | "tabBar" | "renderCircle" | "circlePosition" | "circleWidth" | "borderTopLeftRight" | "shadowStyle" | "initialRouteName" | "screenListeners" | "screenOptions" | "defaultScreenOptions" | "backBehavior"> & import("react").RefAttributes<ICurvedBottomBarRef>>;
+     Screen: (props: import("./components/MenuItemView/model").ScreenBottomBarProps) => JSX.Element;
+diff --git a/node_modules/react-native-curved-bottom-bar/package.json b/node_modules/react-native-curved-bottom-bar/package.json
+index 179fd6d..b8fb7c5 100644
+--- a/node_modules/react-native-curved-bottom-bar/package.json
++++ b/node_modules/react-native-curved-bottom-bar/package.json
+@@ -2,9 +2,9 @@
+   "name": "react-native-curved-bottom-bar",
+   "version": "3.5.1",
+   "description": "A high performance, beautiful and fully customizable curved bottom navigation bar for React Native.",
+-  "main": "lib/commonjs/index",
+-  "module": "lib/module/index",
+-  "types": "lib/typescript/index.d.ts",
++  "main": "src/index",
++  "module": "src/index",
++  "types": "src/index",
+   "react-native": "src/index",
+   "source": "src/index",
+   "files": [
+diff --git a/node_modules/react-native-curved-bottom-bar/src/CurvedBottomBar/index.tsx b/node_modules/react-native-curved-bottom-bar/src/CurvedBottomBar/index.tsx
+index 2d54896..f59ab9a 100644
+--- a/node_modules/react-native-curved-bottom-bar/src/CurvedBottomBar/index.tsx
++++ b/node_modules/react-native-curved-bottom-bar/src/CurvedBottomBar/index.tsx
+@@ -2,8 +2,10 @@ import Screen from './components/MenuItemView';
+ import Navigator from './components/BottomBarView';
+ import NavigatorExpo from './components/BottomBarViewExpo';
+ import { ICurvedBottomBarRef } from './components/BottomBarView/model';
++import { CurvedViewComponent } from './components/CurvedView/curvedView'
++import { getPathUp } from './utils/pathUp'
+ 
+ const CurvedBottomBar = { Navigator, Screen };
+ const CurvedBottomBarExpo = { Navigator: NavigatorExpo, Screen };
+ 
+-export { CurvedBottomBar, CurvedBottomBarExpo, ICurvedBottomBarRef };
++export { CurvedBottomBar, CurvedBottomBarExpo, ICurvedBottomBarRef, CurvedViewComponent, getPathUp };

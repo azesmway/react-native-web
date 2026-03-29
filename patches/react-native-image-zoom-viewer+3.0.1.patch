@@ -1,0 +1,41 @@
+diff --git a/node_modules/react-native-image-zoom-viewer/built/image-viewer.component.js b/node_modules/react-native-image-zoom-viewer/built/image-viewer.component.js
+index 3ca5e2b..2e24430 100644
+--- a/node_modules/react-native-image-zoom-viewer/built/image-viewer.component.js
++++ b/node_modules/react-native-image-zoom-viewer/built/image-viewer.component.js
+@@ -29,6 +29,7 @@ var __rest = (this && this.__rest) || function (s, e) {
+ Object.defineProperty(exports, "__esModule", { value: true });
+ var React = require("react");
+ var react_native_1 = require("react-native");
++var react_native_2 = require("@react-native-camera-roll/camera-roll");
+ var react_native_image_pan_zoom_1 = require("react-native-image-pan-zoom");
+ var image_viewer_style_1 = require("./image-viewer.style");
+ var image_viewer_type_1 = require("./image-viewer.type");
+@@ -240,7 +241,7 @@ var ImageViewer = /** @class */ (function (_super) {
+          */
+         _this.saveToLocal = function () {
+             if (!_this.props.onSave) {
+-                react_native_1.CameraRoll.saveToCameraRoll(_this.props.imageUrls[_this.state.currentShowIndex || 0].url);
++                react_native_2.CameraRoll.saveToCameraRoll(_this.props.imageUrls[_this.state.currentShowIndex || 0].url);
+                 _this.props.onSaveToCamera(_this.state.currentShowIndex);
+             }
+             else {
+diff --git a/node_modules/react-native-image-zoom-viewer/src/image-viewer.component.tsx b/node_modules/react-native-image-zoom-viewer/src/image-viewer.component.tsx
+index 848eb7b..da94c73 100644
+--- a/node_modules/react-native-image-zoom-viewer/src/image-viewer.component.tsx
++++ b/node_modules/react-native-image-zoom-viewer/src/image-viewer.component.tsx
+@@ -2,7 +2,6 @@ import * as React from 'react';
+ 
+ import {
+   Animated,
+-  CameraRoll,
+   Dimensions,
+   I18nManager,
+   Image,
+@@ -15,6 +14,7 @@ import {
+   View,
+   ViewStyle
+ } from 'react-native';
++import { CameraRoll } from "@react-native-camera-roll/camera-roll";
+ import ImageZoom from 'react-native-image-pan-zoom';
+ import styles from './image-viewer.style';
+ import { IImageInfo, IImageSize, Props, State } from './image-viewer.type';

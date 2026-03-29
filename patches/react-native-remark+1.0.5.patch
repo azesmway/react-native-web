@@ -1,0 +1,109 @@
+diff --git a/node_modules/react-native-remark/package.json b/node_modules/react-native-remark/package.json
+index c97e2d5..47d1e02 100644
+--- a/node_modules/react-native-remark/package.json
++++ b/node_modules/react-native-remark/package.json
+@@ -2,8 +2,8 @@
+   "name": "react-native-remark",
+   "version": "1.0.5",
+   "description": "Remark for React Native",
+-  "main": "dist/index.mjs",
+-  "types": "dist/index.d.mts",
++  "main": "src/index.tsx",
++  "types": "src/index.tsx",
+   "repository": {
+     "type": "git",
+     "url": "git+https://github.com/imwithye/react-native-remark.git"
+diff --git a/node_modules/react-native-remark/src/markdown.tsx b/node_modules/react-native-remark/src/markdown.tsx
+index 22c7aef..8d281fb 100644
+--- a/node_modules/react-native-remark/src/markdown.tsx
++++ b/node_modules/react-native-remark/src/markdown.tsx
+@@ -72,7 +72,7 @@ export const Markdown = ({
+   );
+ 
+   return (
+-    <View onLayout={onLayout} style={{ flex: 1 }}>
++    <View onLayout={onLayout}>
+       <MarkdownContextProvider
+         tree={tree}
+         renderers={renderers}
+diff --git a/node_modules/react-native-remark/src/renderers/code.tsx b/node_modules/react-native-remark/src/renderers/code.tsx
+index 5f0267b..ec3e740 100644
+--- a/node_modules/react-native-remark/src/renderers/code.tsx
++++ b/node_modules/react-native-remark/src/renderers/code.tsx
+@@ -11,18 +11,19 @@ import {
+   ViewProps,
+   useColorScheme,
+ } from "react-native";
+-import SyntaxHighlighter from "react-syntax-highlighter";
+-import {
+-  atomOneDark,
+-  atomOneLight,
+-} from "react-syntax-highlighter/dist/esm/styles/hljs";
++// import SyntaxHighlighter from "react-syntax-highlighter";
++// import {
++//   atomOneDark,
++//   atomOneLight,
++// } from "react-syntax-highlighter/dist/esm/styles/hljs";
+ 
+ import { useMarkdownContext } from "../context";
+ import { mergeStyles } from "../themes/themes";
+ import { RendererArgs } from "./renderers";
+ 
+ const generateNativeStyles = (
+-  theme: typeof atomOneLight | typeof atomOneDark,
++  // typeof atomOneLight | typeof atomOneDark
++  theme: any,
+   node: rendererNode,
+   themedStyle?: TextStyle,
+ ): TextStyle => {
+@@ -116,14 +117,15 @@ const NativeSyntaxHighlighter = ({
+   children,
+ }: NativeSyntaxHighlighterProps) => {
+   return (
+-    <SyntaxHighlighter
+-      language={language}
+-      renderer={nativeRenderer()}
+-      PreTag={ScrollViewContainer}
+-      CodeTag={ViewContainer}
+-    >
+-      {children}
+-    </SyntaxHighlighter>
++    <Text>{children}</Text>
++    // <SyntaxHighlighter
++    //   language={language}
++    //   renderer={nativeRenderer()}
++    //   PreTag={ScrollViewContainer}
++    //   CodeTag={ViewContainer}
++    // >
++    //   {children}
++    // </SyntaxHighlighter>
+   );
+ };
+ 
+@@ -177,9 +179,9 @@ export const CodeRenderer = ({ node }: RendererArgs<Code>): ReactNode => {
+                 color={styles.codeBlock?.headerTextStyle?.color}
+               />
+             )}
+-            <Text style={styles.codeBlock?.headerTextStyle}>
+-              {copied ? "Copied" : "Copy"}
+-            </Text>
++            {/*<Text style={styles.codeBlock?.headerTextStyle}>*/}
++            {/*  {copied ? "Copied" : "Copy"}*/}
++            {/*</Text>*/}
+           </View>
+         </TouchableOpacity>
+       </View>
+diff --git a/node_modules/react-native-remark/src/renderers/text.tsx b/node_modules/react-native-remark/src/renderers/text.tsx
+index ced0bdd..5c8b0a9 100644
+--- a/node_modules/react-native-remark/src/renderers/text.tsx
++++ b/node_modules/react-native-remark/src/renderers/text.tsx
+@@ -8,7 +8,8 @@ import { RendererArgs } from "./renderers";
+ export const TextRenderer = ({ node }: RendererArgs<MdText>): ReactNode => {
+   const { styles } = useMarkdownContext();
+ 
+-  const value = (node.value || "").replace(/\n/g, " ");
++  // .replace(/\n/g, " ");
++  const value = (node.value || "");
+   if (!value) return null;
+   return <Text style={styles.text}>{value}</Text>;
+ };

@@ -1,0 +1,16 @@
+{
+  "name": "app-controller-web",
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": true,
+  "main": "src/controller.ts",
+  "scripts": {
+    "build": "vite build"
+  },
+  "dependencies": {},
+  "peerDependencies": {
+    "react": ">=19.1.0",
+    "react-native": ">=0.81.5",
+    "expo": ">=54.0.23"
+  }
+}

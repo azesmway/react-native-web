@@ -1,0 +1,8 @@
+{
+  "name": "screen-map-web",
+  "version": "1.0.0",
+  "main": "src/index",
+  "private": true,
+  "license": "MIT",
+  "dependencies": {}
+}

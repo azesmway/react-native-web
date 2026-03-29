@@ -1,0 +1,18 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "ru.onlinetur",
+      "sha256_cert_fingerprints": ["C5:CA:B2:D4:7E:20:19:84:E7:C0:BE:74:E2:51:F1:74:E9:DC:1D:C7:2D:B8:D9:32:B8:86:04:54:5B:3E:B5:2C"]
+    }
+  },
+  {
+    "relation": ["delegate_permission/common.handle_all_urls", "delegate_permission/common.get_login_creds"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.expo.android.onlinetur",
+      "sha256_cert_fingerprints": ["E0:1B:1F:91:66:A8:4F:B8:40:B2:72:F0:67:9D:32:23:C9:F1:80:94:1A:F5:2E:0C:ED:3D:F0:BF:94:53:53:84"]
+    }
+  }
+]

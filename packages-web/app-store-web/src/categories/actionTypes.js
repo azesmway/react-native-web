@@ -1,0 +1,4 @@
+export const CATEGORIES_FETCH = 'categories.CATEGORIES_FETCH'
+// export const CATEGORY_SELECTED = 'categories.CATEGORY_SELECTED'
+export const CATEGORIES_FETCH_ERROR = 'categories.CATEGORIES_FETCH_ERROR'
+export const CATEGORY_CHANGE_NAME = 'categories.CATEGORY_CHANGE_NAME'

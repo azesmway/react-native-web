@@ -1,0 +1,50 @@
+diff --git a/node_modules/react-native/Libraries/Components/TextInput/TextInput.js b/node_modules/react-native/Libraries/Components/TextInput/TextInput.js
+index 1e95eb6..df62939 100644
+--- a/node_modules/react-native/Libraries/Components/TextInput/TextInput.js
++++ b/node_modules/react-native/Libraries/Components/TextInput/TextInput.js
+@@ -941,6 +941,7 @@ const TextInput: component(
+ };
+ 
+ TextInput.displayName = 'TextInput';
++TextInput.propTypes = require('deprecated-react-native-prop-types').TextInputPropTypes;
+ 
+ // $FlowFixMe[prop-missing]
+ TextInput.State = {
+diff --git a/node_modules/react-native/Libraries/Text/Text.js b/node_modules/react-native/Libraries/Text/Text.js
+index b08b8f3..7ac1c34 100644
+--- a/node_modules/react-native/Libraries/Text/Text.js
++++ b/node_modules/react-native/Libraries/Text/Text.js
+@@ -326,6 +326,7 @@ const TextImpl: component(
+ };
+ 
+ TextImpl.displayName = 'Text';
++TextImpl.propTypes = require('deprecated-react-native-prop-types').TextPropTypes;
+ 
+ type TextPressabilityProps = $ReadOnly<{
+   onLongPress?: ?(event: GestureResponderEvent) => mixed,
+diff --git a/node_modules/react-native/index.js b/node_modules/react-native/index.js
+index c737c93..96f0fd3 100644
+--- a/node_modules/react-native/index.js
++++ b/node_modules/react-native/index.js
+@@ -336,6 +336,21 @@ module.exports = {
+     return require('./src/private/components/virtualview/VirtualView')
+       .VirtualViewMode;
+   },
++  get ViewPropTypes(): DeprecatedViewPropTypes {
++    return require('deprecated-react-native-prop-types').ViewPropTypes;
++  },
++  get ColorPropType(): DeprecatedColorPropType {
++    return require('deprecated-react-native-prop-types').ColorPropType;
++  },
++  get ImagePropTypes(): DeprecatedImagePropTypes {
++    return require('deprecated-react-native-prop-types').ImagePropTypes;
++  },
++  get TextPropTypes(): DeprecatedTextPropTypes {
++    return require('deprecated-react-native-prop-types').TextPropTypes;
++  },
++  get TextInputPropTypes(): DeprecatedTextInputPropTypes {
++    return require('deprecated-react-native-prop-types').TextInputPropTypes;
++  },
+   // #endregion
+ } as ReactNativePublicAPI;
+ 

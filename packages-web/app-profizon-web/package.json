@@ -1,0 +1,12 @@
+{
+  "name": "app-profizon-web",
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": true,
+  "main": "src/index.js",
+  "scripts": {
+    "build": "vite build"
+  },
+  "dependencies": {},
+  "peerDependencies": {}
+}

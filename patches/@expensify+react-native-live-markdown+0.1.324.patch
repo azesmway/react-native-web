@@ -1,0 +1,13 @@
+diff --git a/node_modules/@expensify/react-native-live-markdown/src/parseExpensiMark.ts b/node_modules/@expensify/react-native-live-markdown/src/parseExpensiMark.ts
+index 6a5d476..accb378 100644
+--- a/node_modules/@expensify/react-native-live-markdown/src/parseExpensiMark.ts
++++ b/node_modules/@expensify/react-native-live-markdown/src/parseExpensiMark.ts
+@@ -3,7 +3,7 @@
+ import {Platform} from 'react-native';
+ import {ExpensiMark} from 'expensify-common';
+ import {unescapeText} from 'expensify-common/dist/utils';
+-import {decode} from 'html-entities';
++import {decode} from 'html-entities/dist/commonjs/index';
+ import type {WorkletFunction} from 'react-native-worklets';
+ import {groupRanges, sortRanges, excludeRangeTypesFromFormatting, getRangesToExcludeFormatting} from './rangeUtils';
+ import type {MarkdownRange, MarkdownType} from './commonTypes';

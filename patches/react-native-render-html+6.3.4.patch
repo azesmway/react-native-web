@@ -1,0 +1,66 @@
+diff --git a/node_modules/react-native-render-html/lib/commonjs/RenderHTML.js b/node_modules/react-native-render-html/lib/commonjs/RenderHTML.js
+index c83b10c..7ea4f10 100644
+--- a/node_modules/react-native-render-html/lib/commonjs/RenderHTML.js
++++ b/node_modules/react-native-render-html/lib/commonjs/RenderHTML.js
+@@ -1,4 +1,5 @@
+ "use strict";
++import React from 'react';
+ 
+ Object.defineProperty(exports, "__esModule", {
+   value: true
+diff --git a/node_modules/react-native-render-html/lib/commonjs/elements/useIMGElementStateWithCache.js b/node_modules/react-native-render-html/lib/commonjs/elements/useIMGElementStateWithCache.js
+index ba3599e..4886c2b 100644
+--- a/node_modules/react-native-render-html/lib/commonjs/elements/useIMGElementStateWithCache.js
++++ b/node_modules/react-native-render-html/lib/commonjs/elements/useIMGElementStateWithCache.js
+@@ -1,4 +1,5 @@
+ "use strict";
++import React from "react";
+ 
+ Object.defineProperty(exports, "__esModule", {
+   value: true
+diff --git a/node_modules/react-native-render-html/lib/commonjs/index.js b/node_modules/react-native-render-html/lib/commonjs/index.js
+index f026101..40d4cef 100644
+--- a/node_modules/react-native-render-html/lib/commonjs/index.js
++++ b/node_modules/react-native-render-html/lib/commonjs/index.js
+@@ -1,5 +1,6 @@
+ "use strict";
+-
++import React from "react";
++console.log('exports 0', exports);
+ Object.defineProperty(exports, "__esModule", {
+   value: true
+ });
+@@ -49,6 +50,7 @@ var _exportNames = {
+   IMGElementContentAlt: true,
+   useIMGElementProps: true
+ };
++console.log('exports 1', exports);
+ Object.defineProperty(exports, "RenderHTML", {
+   enumerable: true,
+   get: function () {
+diff --git a/node_modules/react-native-render-html/package.json b/node_modules/react-native-render-html/package.json
+index 2163dee..7f9eb76 100644
+--- a/node_modules/react-native-render-html/package.json
++++ b/node_modules/react-native-render-html/package.json
+@@ -4,9 +4,9 @@
+   "author": "Meliorence <contact@meliorence.com> (github.com/meliorence)",
+   "license": "BSD-2-Clause",
+   "description": "The hackable, full-featured Open Source HTML rendering solution for React Native.",
+-  "main": "lib/commonjs/index.js",
+-  "types": "lib/typescript/index.d.ts",
+-  "react-native": "src/",
++  "main": "src/index.ts",
++  "types": "src/index.ts",
++  "react-native": "src/index.ts",
+   "files": [
+     "lib",
+     "src",
+diff --git a/node_modules/react-native-render-html/src/index.ts b/node_modules/react-native-render-html/src/index.ts
+index 8569583..cd7abd2 100644
+--- a/node_modules/react-native-render-html/src/index.ts
++++ b/node_modules/react-native-render-html/src/index.ts
+@@ -1,3 +1,4 @@
++import React from 'react';
+ import RenderHTML from './RenderHTML';
+ export {
+   defaultHTMLElementModels,

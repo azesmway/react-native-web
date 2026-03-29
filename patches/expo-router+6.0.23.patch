@@ -1,0 +1,13 @@
+diff --git a/node_modules/expo-router/build/fork/getPathFromState.js b/node_modules/expo-router/build/fork/getPathFromState.js
+index a20305a..c9b345e 100644
+--- a/node_modules/expo-router/build/fork/getPathFromState.js
++++ b/node_modules/expo-router/build/fork/getPathFromState.js
+@@ -273,7 +273,7 @@ function getPathDataFromState(state, options) {
+             delete focusedParams['#'];
+             focusedParams = (0, navigationParams_1.removeInternalExpoRouterParams)(focusedParams);
+             // END FORK
+-            const query = queryString.stringify(focusedParams, { sort: false });
++            const query = queryString && queryString.default ? queryString.default.stringify(focusedParams, { sort: false }) : queryString.stringify ? queryString.stringify(focusedParams, { sort: false }) : undefined;
+             if (query) {
+                 path += `?${query}`;
+             }

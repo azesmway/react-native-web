@@ -1,0 +1,28 @@
+diff --git a/node_modules/pdfjs-dist/build/pdf.mjs b/node_modules/pdfjs-dist/build/pdf.mjs
+index f3f03fa..e18e57f 100644
+--- a/node_modules/pdfjs-dist/build/pdf.mjs
++++ b/node_modules/pdfjs-dist/build/pdf.mjs
+@@ -5763,10 +5763,10 @@ if (isNodeJS) {
+   var packageCapability = Promise.withResolvers();
+   var packageMap = null;
+   const loadPackages = async () => {
+-    const fs = await import(/*webpackIgnore: true*/"fs"),
+-      http = await import(/*webpackIgnore: true*/"http"),
+-      https = await import(/*webpackIgnore: true*/"https"),
+-      url = await import(/*webpackIgnore: true*/"url");
++    const fs = await require(/*webpackIgnore: true*/"fs"),
++      http = await require(/*webpackIgnore: true*/"http"),
++      https = await require(/*webpackIgnore: true*/"https"),
++      url = await require(/*webpackIgnore: true*/"url");
+     let canvas, path2d;
+     return new Map(Object.entries({
+       fs,
+@@ -12229,7 +12229,7 @@ class PDFWorker {
+       if (this.#mainThreadWorkerMessageHandler) {
+         return this.#mainThreadWorkerMessageHandler;
+       }
+-      const worker = await import(/*webpackIgnore: true*/this.workerSrc);
++      const worker = await require(/*webpackIgnore: true*/this.workerSrc);
+       return worker.WorkerMessageHandler;
+     };
+     return shadow(this, "_setupFakeWorkerGlobal", loader());

@@ -1,0 +1,185 @@
+{
+  "expo": {
+    "name": "onlinetur",
+    "slug": "expoonlinetur",
+    "version": "5.9.4",
+    "runtimeVersion": "5.9.4",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "onlinetur",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "org.reactjs.native.OnlineTur",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      },
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "usesAppleSignIn": true,
+      "buildNumber": "6"
+    },
+    "android": {
+      "versionCode": 18,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.expo.android.onlinetur",
+      "googleServicesFile": "./google-services.json",
+      "edgeToEdgeEnabled": true
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-router",
+        {
+          "asyncRoutes": {
+            "web": true,
+            "default": "development"
+          }
+        }
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff"
+        }
+      ],
+      "expo-apple-authentication",
+      "@react-native-google-signin/google-signin",
+      "@react-native-firebase/app",
+      "@react-native-firebase/auth",
+      "@react-native-firebase/crashlytics",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static"
+          }
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "defaultChannel": "onlineTurAndroid",
+          "enableBackgroundRemoteNotifications": true
+        }
+      ],
+      "expo-share-intent"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false,
+        "asyncRoutes": {
+          "web": true,
+          "default": "development"
+        }
+      },
+      "eas": {
+        "projectId": "c1d937ff-c1f5-44e0-a478-d936f6a5c979"
+      }
+    },
+    "updates": {
+      "enabled": true,
+      "url": "https://u.expo.dev/c1d937ff-c1f5-44e0-a478-d936f6a5c979",
+      "requestHeaders": {
+        "expo-channel-name": "production",
+        "channel-name": "production",
+        "expo-runtime-version": "5.9.4"
+      }
+    },
+    "owner": "azesm",
+    "onlinetur": {
+      "name": "onlinetur",
+      "displayName": "onlinetur",
+      "siteName": "mobile",
+      "appId": "ru.onlinetur.hz",
+      "domainMain": "OnlineTur.ru",
+      "homepage": "https://web.onlinetur.ru",
+      "screenNews": "НОВОСТИ, ОБЗОРЫ",
+      "startPage": "/s",
+      "typeApp": "main",
+      "electornApp": false,
+      "leftMenu": {
+        "action": true,
+        "bron": true,
+        "tur": true
+      },
+      "app": {
+        "version": "5.9.4",
+        "rebuildDatabase": false,
+        "appType": "mobile"
+      },
+      "constants": {
+        "url_main": "https://a.onlinetur.ru",
+        "url_main_link": "https://www.onlinetur.ru",
+        "url_news": "https://zagrebon.com",
+        "url_pics": "https://stuzon.com",
+        "url_avatar": "//distantoffice.ru",
+        "url_api1_path": "/api/chat_v3",
+        "url_api2_path": "/api/chat_v3",
+        "url_api3_path": "/api/chat_v3",
+        "req_chat": "/get_list_chat.php",
+        "url_html_main": "/get_note.php",
+        "url_radio": "https://radio.onlinetur.ru/radio/station_json.php",
+        "url_rf": "ОнлайнТур.рф",
+        "url_auth": "https://app.distant-office.ru",
+        "url_auth_api3": "/api/chat_v3",
+        "url_null_image": "/images/noimg.png",
+        "url_api_main": "https://app.distant-office.ru",
+        "url_beta": "https://beta.distant-office.ru",
+        "url_api": "/api/chat_v3",
+        "url_action": "/api/chat_v3/get_promo.php",
+        "url_setbron": "/api/chat_v3/set_promo_bron.php",
+        "url_request": "/api/chat_v3/get_promo_user.php",
+        "url_promo": "/api/chat_v3/action_promo.php",
+        "url_rating": "https://beta.distant-office.ru/api/index.php",
+        "url_places": "https://beta.distant-office.ru/places.php?json=1&country=",
+        "url_categories": "https://beta.distant-office.ru/api/index.php?action=get_criteria",
+        "url_hotel": "https://beta.distant-office.ru/m/api/index.php",
+        "url_place": "https://beta.distant-office.ru/m/api/index.php",
+        "url_actions": "/get_list_promo_categ.php",
+        "url_actions_list": "/get_list_promo.php",
+        "url_hotel_actions_list": "/get_list_promo_hotel.php",
+        "url_push": "/get_notyf_chat.php",
+        "url_push_me": "/get_notyf_me_chat.php",
+        "url_my_bron": "/get_list_bron_hotel.php",
+        "url_hotel_pay": "/hbp.php",
+        "url_promo_user": "/api/chat_v3/get_name_user_promo.php",
+        "url_promo_user_add": "/api/chat_v3/set_name_user_promo.php",
+        "url_vk_api": "/api/vk/get_add_user.php",
+        "url_vk_api_check": "/api/vk/check_users.php",
+        "url_platform": "/room_type_name.php?id_categories=",
+        "url_get_region": "https://beta.distant-office.ru/m/",
+        "url_claim": "/claim.php",
+        "url_cross": "/auth_token.php"
+      },
+      "footer": {
+        "ReservationUrl": "/hobby/123",
+        "ReservationText": "Цены/места",
+        "NotesUrl": "/hobby/105",
+        "NotesText": "Мои брони",
+        "BonusesUrl": "/bonus",
+        "BonusesText": "Бонусы",
+        "ProfileUrl": "/profile",
+        "ProfileText": "Профиль"
+      },
+      "Client ID": "1082134236630-1jkq1g35dmoadp2hg8fpmhteulfsq2o3.apps.googleusercontent.com",
+      "Client Secret": "2JhpUxnajGLu-2QGylte3R3A",
+      "OAuth": "1082134236630-nq31ea63v8s7ieakgi5h970hf1h9n0qj.apps.googleusercontent.com",
+      "WEB": "1082134236630-1jkq1g35dmoadp2hg8fpmhteulfsq2o3.apps.googleusercontent.com",
+      "WEB Sec": "2JhpUxnajGLu-2QGylte3R3A"
+    }
+  }
+}

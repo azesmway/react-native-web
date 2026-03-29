@@ -1,0 +1,10 @@
+{
+  "name": "screen-main-web",
+  "version": "1.0.0",
+  "license": "MIT",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "vite build && cp -r ./images ./dist"
+  },
+  "devDependencies": {}
+}

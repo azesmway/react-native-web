@@ -1,0 +1,276 @@
+diff --git a/node_modules/@valdio/react-native-scrollable-tabview/lib/Button.android.js b/node_modules/@valdio/react-native-scrollable-tabview/lib/Button.android.js
+index 9b7a004..c6b5fbc 100644
+--- a/node_modules/@valdio/react-native-scrollable-tabview/lib/Button.android.js
++++ b/node_modules/@valdio/react-native-scrollable-tabview/lib/Button.android.js
+@@ -1,15 +1,16 @@
+ import React from 'react'
+-import ReactNative from 'react-native'
++import { TouchableNativeFeedback } from 'react-native'
+ 
+-const {TouchableNativeFeedback} = ReactNative
+-
+-export default Button = (props) =>
+-  <TouchableNativeFeedback
++const Button = (props) => {
++  return <TouchableNativeFeedback
+     delayPressIn={0}
+     background={TouchableNativeFeedback.SelectableBackground()} // eslint-disable-line new-cap
+     {...props}
+   >
+     {props.children}
+   </TouchableNativeFeedback>
++}
++
++export default Button
+ 
+ 
+diff --git a/node_modules/@valdio/react-native-scrollable-tabview/lib/Button.ios.js b/node_modules/@valdio/react-native-scrollable-tabview/lib/Button.ios.js
+index 9cb949c..d0f8bb5 100644
+--- a/node_modules/@valdio/react-native-scrollable-tabview/lib/Button.ios.js
++++ b/node_modules/@valdio/react-native-scrollable-tabview/lib/Button.ios.js
+@@ -1,11 +1,11 @@
+ import React from 'react'
+-import ReactNative from 'react-native'
++import { TouchableOpacity } from 'react-native'
+ 
+-const {TouchableOpacity} = ReactNative
+-
+-export default Button = (props) => {
++const Button = (props) => {
+   return <TouchableOpacity {...props}>
+     {props.children}
+   </TouchableOpacity>
+ }
+ 
++export default Button
++
+diff --git a/node_modules/@valdio/react-native-scrollable-tabview/lib/Button.web.js b/node_modules/@valdio/react-native-scrollable-tabview/lib/Button.web.js
+new file mode 100644
+index 0000000..c4f3794
+--- /dev/null
++++ b/node_modules/@valdio/react-native-scrollable-tabview/lib/Button.web.js
+@@ -0,0 +1,10 @@
++import React from 'react'
++import { TouchableOpacity } from 'react-native'
++
++const Button = (props) => {
++  return <TouchableOpacity {...props}>
++    {props.children}
++  </TouchableOpacity>
++}
++
++export default Button
+diff --git a/node_modules/@valdio/react-native-scrollable-tabview/lib/DefaultTabBar.js b/node_modules/@valdio/react-native-scrollable-tabview/lib/DefaultTabBar.js
+index b90771e..b89f4c5 100644
+--- a/node_modules/@valdio/react-native-scrollable-tabview/lib/DefaultTabBar.js
++++ b/node_modules/@valdio/react-native-scrollable-tabview/lib/DefaultTabBar.js
+@@ -1,5 +1,5 @@
+ import React, {Component} from 'react'
+-import ReactNative from 'react-native'
++import * as ReactNative from 'react-native'
+ import PropTypes from 'prop-types'
+ 
+ const {
+@@ -82,10 +82,10 @@ DefaultTabBar.propTypes = {
+   backgroundColor: PropTypes.string,
+   activeTextColor: PropTypes.string,
+   inactiveTextColor: PropTypes.string,
+-  textStyle: Text.propTypes.style,
+-  tabStyle: ViewPropTypes.style,
++  textStyle: PropTypes.any,
++  tabStyle: PropTypes.any,
+   renderTab: PropTypes.func,
+-  underlineStyle: ViewPropTypes.style
++  underlineStyle: PropTypes.any
+ }
+ 
+ DefaultTabBar.defaultProps = {
+diff --git a/node_modules/@valdio/react-native-scrollable-tabview/lib/SceneComponent.js b/node_modules/@valdio/react-native-scrollable-tabview/lib/SceneComponent.js
+index 54cf8d1..30bb968 100644
+--- a/node_modules/@valdio/react-native-scrollable-tabview/lib/SceneComponent.js
++++ b/node_modules/@valdio/react-native-scrollable-tabview/lib/SceneComponent.js
+@@ -1,11 +1,11 @@
+ import React from 'react'
+-import ReactNative from 'react-native'
++import * as ReactNative from 'react-native'
+ 
+ const {View, StyleSheet} = ReactNative
+ 
+ import StaticContainer from './StaticContainer'
+ 
+-export default SceneComponent = (Props) => {
++const SceneComponent = (Props) => {
+   const {shouldUpdated, ...props} = Props
+   return <View {...props}>
+     <StaticContainer shouldUpdate={shouldUpdated}>
+@@ -13,3 +13,5 @@ export default SceneComponent = (Props) => {
+     </StaticContainer>
+   </View>
+ }
++
++export default SceneComponent
+diff --git a/node_modules/@valdio/react-native-scrollable-tabview/lib/ScrollableTabBar.js b/node_modules/@valdio/react-native-scrollable-tabview/lib/ScrollableTabBar.js
+index e998098..0273bf6 100644
+--- a/node_modules/@valdio/react-native-scrollable-tabview/lib/ScrollableTabBar.js
++++ b/node_modules/@valdio/react-native-scrollable-tabview/lib/ScrollableTabBar.js
+@@ -1,5 +1,5 @@
+ import React, {Component} from 'react'
+-import ReactNative from 'react-native'
++import * as ReactNative from 'react-native'
+ import PropTypes from 'prop-types'
+ 
+ const {
+@@ -112,22 +112,22 @@ export default class ScrollableTabBar extends Component {
+     }
+   }
+ 
+-  renderTab(name, page, isTabActive, onPressHandler, onLayoutHandler) {
++  renderTab(item, page, isTabActive, onPressHandler, onLayoutHandler) {
+     const {activeTextColor, inactiveTextColor, textStyle} = this.props
+     const textColor = isTabActive ? activeTextColor : inactiveTextColor
+     const fontWeight = isTabActive ? 'bold' : 'normal'
+ 
+     return <Button
+-      key={`${name}_${page}`}
++      key={`${item.name}_${page}`}
+       accessible={true}
+-      accessibilityLabel={name}
++      accessibilityLabel={item.name}
+       accessibilityTraits='button'
+       onPress={() => onPressHandler(page)}
+       onLayout={onLayoutHandler}
+     >
+       <View style={[styles.tab, this.props.tabStyle]}>
+         <Text style={[{color: textColor, fontWeight}, textStyle]}>
+-          {name}
++          {item.name}
+         </Text>
+       </View>
+     </Button>
+@@ -173,13 +173,12 @@ export default class ScrollableTabBar extends Component {
+       >
+         <View
+           style={[styles.tabs, {width: this.state._containerWidth}, this.props.tabsContainerStyle]}
+-          ref={'tabContainer'}
+           onLayout={this.props.disableTabBarOnLayout ? undefined : this.onTabContainerLayout}
+         >
+-          {this.props.tabs.map((name, page) => {
++          {this.props.tabs.map((item, page) => {
+             const isTabActive = this.props.activeTab === page
+             const renderTab = this.props.renderTab || this.renderTab
+-            return renderTab(name, page, isTabActive, this.props.goToPage, this.measureTab.bind(this, page))
++            return renderTab(item, page, isTabActive, this.props.goToPage, this.measureTab.bind(this, page))
+           })}
+           <Animated.View style={[tabUnderlineStyle, dynamicTabUnderline, this.props.underlineStyle]}/>
+         </View>
+@@ -187,7 +186,7 @@ export default class ScrollableTabBar extends Component {
+     </View>
+   }
+ 
+-  componentWillReceiveProps(nextProps) {
++  UNSAFE_componentWillReceiveProps(nextProps) {
+     // If the tabs change, force the width of the tabs container to be recalculated
+     if (JSON.stringify(this.props.tabs) !== JSON.stringify(nextProps.tabs) && this.state._containerWidth) {
+       this.setState({_containerWidth: null})
+@@ -230,12 +229,12 @@ ScrollableTabBar.propTypes = {
+   activeTextColor: PropTypes.string,
+   inactiveTextColor: PropTypes.string,
+   scrollOffset: PropTypes.number,
+-  style: ViewPropTypes.style,
+-  tabStyle: ViewPropTypes.style,
+-  tabsContainerStyle: ViewPropTypes.style,
+-  textStyle: Text.propTypes.style,
++  style: PropTypes.any,
++  tabStyle: PropTypes.any,
++  tabsContainerStyle: PropTypes.any,
++  textStyle: PropTypes.any,
+   renderTab: PropTypes.func,
+-  underlineStyle: ViewPropTypes.style,
++  underlineStyle: PropTypes.any,
+   onScroll: PropTypes.func,
+   disableTabBarOnLayout: PropTypes.bool
+ }
+diff --git a/node_modules/@valdio/react-native-scrollable-tabview/lib/index.js b/node_modules/@valdio/react-native-scrollable-tabview/lib/index.js
+index f125bdc..03cfaaf 100644
+--- a/node_modules/@valdio/react-native-scrollable-tabview/lib/index.js
++++ b/node_modules/@valdio/react-native-scrollable-tabview/lib/index.js
+@@ -1,5 +1,5 @@
+ import React, {Component} from 'react'
+-import ReactNative from 'react-native'
++import * as ReactNative from 'react-native'
+ import PropTypes from 'prop-types'
+ 
+ const {
+@@ -42,6 +42,8 @@ class ScrollableTabView extends Component {
+     this._onMomentumScrollBeginAndEnd = this._onMomentumScrollBeginAndEnd.bind(this)
+     this._updateSelectedPage = this._updateSelectedPage.bind(this)
+     this.renderCollapsableBar = this.renderCollapsableBar.bind(this)
++
++    this.scrollView = React.createRef()
+   }
+ 
+   // mixins = [TimerMixin]
+@@ -101,7 +103,7 @@ class ScrollableTabView extends Component {
+     })
+   }
+ 
+-  componentWillReceiveProps(props) {
++  UNSAFE_componentWillReceiveProps(props) {
+     if (props.children !== this.props.children) {
+       this.updateSceneKeys({page: this.state.currentPage, children: props.children})
+     }
+@@ -113,8 +115,9 @@ class ScrollableTabView extends Component {
+ 
+   goToPage(pageNumber, animated = !this.props.scrollWithoutAnimation) {
+     const offset = pageNumber * this.state.containerWidth
+-    if (this.scrollView && this.scrollView._component && this.scrollView._component.scrollTo) {
+-      this.scrollView._component.scrollTo({x: offset, y: 0, animated})
++
++    if (this.scrollView && this.scrollView.current && this.scrollView.current.scrollTo) {
++      this.scrollView.current.scrollTo({x: offset, y: 0, animated})
+     }
+ 
+     const currentPage = this.state.currentPage
+@@ -186,7 +189,7 @@ class ScrollableTabView extends Component {
+       pagingEnabled
+       automaticallyAdjustContentInsets={false}
+       contentOffset={{x: this.props.initialPage * this.state.containerWidth}}
+-      ref={scrollView => this.scrollView = scrollView}
++      ref={this.scrollView}
+       onScroll={Animated.event([{nativeEvent: {contentOffset: {x: this.state.scrollX}}}], {useNativeDriver: true})}
+       onMomentumScrollBegin={this._onMomentumScrollBeginAndEnd}
+       onMomentumScrollEnd={this._onMomentumScrollBeginAndEnd}
+@@ -286,7 +289,7 @@ class ScrollableTabView extends Component {
+     let overlayTabs = (this.props.tabBarPosition === 'overlayTop' || this.props.tabBarPosition === 'overlayBottom')
+     let tabBarProps = {
+       goToPage: this.goToPage,
+-      tabs: this._children().map((child) => child.props.tabLabel),
++      tabs: this._children().map((child) => child.props.tabItem),
+       activeTab: this.state.currentPage,
+       scrollX: this.state.scrollX,
+       scrollValue: this.state.scrollValue,
+@@ -366,7 +369,7 @@ ScrollableTabView.propTypes = {
+   onChangeTab: PropTypes.func,
+   onScroll: PropTypes.func,
+   renderTabBar: PropTypes.any,
+-  style: ViewPropTypes.style,
++  style: PropTypes.any,
+   contentProps: PropTypes.object,
+   scrollWithoutAnimation: PropTypes.bool,
+   locked: PropTypes.bool,
+@@ -383,8 +386,10 @@ const styles = StyleSheet.create({
+   }
+ })
+ 
+-module.exports = {
+-  DefaultTabBar,
+-  ScrollableTabBar,
+-  ScrollableTabView
+-}
++// module.exports = {
++//   DefaultTabBar,
++//   ScrollableTabBar,
++//   ScrollableTabView
++// }
++
++export { DefaultTabBar, ScrollableTabBar, ScrollableTabView }

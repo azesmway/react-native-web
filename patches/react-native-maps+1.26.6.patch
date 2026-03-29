@@ -1,0 +1,16 @@
+diff --git a/node_modules/react-native-maps/android/src/main/java/com/rnmaps/maps/MapView.java b/node_modules/react-native-maps/android/src/main/java/com/rnmaps/maps/MapView.java
+index fa497a9..92a726b 100644
+--- a/node_modules/react-native-maps/android/src/main/java/com/rnmaps/maps/MapView.java
++++ b/node_modules/react-native-maps/android/src/main/java/com/rnmaps/maps/MapView.java
+@@ -1671,7 +1671,10 @@ public class MapView extends com.google.android.gms.maps.MapView implements Goog
+     private void removeMapLoadingLayoutView() {
+         this.removeMapLoadingProgressBar();
+         if (this.mapLoadingLayout != null) {
+-            ((ViewGroup) this.mapLoadingLayout.getParent()).removeView(this.mapLoadingLayout);
++            ViewGroup p = (ViewGroup) this.mapLoadingLayout.getParent();
++            if (p != null) {
++                p.removeView(this.mapLoadingLayout);
++            }
+             this.mapLoadingLayout = null;
+         }
+     }

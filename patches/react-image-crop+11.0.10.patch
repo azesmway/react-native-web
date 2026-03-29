@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-image-crop/src/ReactCrop.tsx b/node_modules/react-image-crop/src/ReactCrop.tsx
+index f74f8ae..3d89b6c 100644
+--- a/node_modules/react-image-crop/src/ReactCrop.tsx
++++ b/node_modules/react-image-crop/src/ReactCrop.tsx
+@@ -94,7 +94,7 @@ export interface ReactCropState {
+   newCropIsBeingDrawn: boolean
+ }
+ 
+-export class ReactCrop extends PureComponent<ReactCropProps, ReactCropState> {
++export default class ReactCrop extends PureComponent<ReactCropProps, ReactCropState> {
+   static xOrds = ['e', 'w']
+   static yOrds = ['n', 's']
+   static xyOrds = ['nw', 'ne', 'se', 'sw']

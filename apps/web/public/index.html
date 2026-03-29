@@ -1,0 +1,223 @@
+<?php
+header("Cache-Control: no-cache, no-store, must-revalidate");
+header("Pragma: no-cache");
+header("Expires: 0");
+
+$urlMain = 'https://a.onlinetur.ru';
+$urlNews = 'https://zagrebon.com';
+$urlChat = $urlMain . '/api/chat_v3/get_info_title.php?';
+$urlChat0 = $urlChat;
+$title = 'Клуб тревел-экспертов. Рейтинги отелей';
+$image = '/images/logo_app.png';
+$description = 'Рейтинги и прямое бронирование отелей. Клуб тревел-экспертов';
+
+function curlChat($url)
+{
+    $ch = curl_init();
+    $timeout = 5;
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+    $output = curl_exec($ch);
+    curl_close($ch);
+
+    if ($output === false) {
+        return null;
+    }
+
+    return json_decode($output, true);
+}
+
+function getData($uri)
+{
+    $result = [];
+    global $urlMain, $urlNews, $urlChat, $urlChat0;
+
+    if (strpos($uri, '/n/') !== false) {
+        $request = explode('/', $_SERVER['REQUEST_URI']);
+        $pos = strpos($request[2], '?');
+
+        if (!$pos) {
+            $pos = strpos($request[2], '#');
+        }
+
+        if ($pos) {
+            $id = substr($request[2], 0, $pos);
+        } else {
+            $id = $request[2];
+        }
+        $url = $urlNews . '/i' . $id . '.json?u=';
+
+        $article = curlChat($url);
+
+        if (!$article) {
+            return null;
+        }
+
+        if ($article['type'] === 1) {
+            $title = $article['title'];
+            $description = $article['short_description'];
+            $image = !empty($article['content'][0]['array'][0]) ? $article['content'][0]['array'][0] : $article['cover_image'];
+        } elseif ($article['type'] === 18 || $article['type'] === 9 || $article['type'] === 17) {
+            $title = $article['title'];
+            $description = $article['short_description'];
+
+            for ($i = 0; $i < count($article['content']); $i++) {
+                if ($article['content'][$i]['type'] === 'image') {
+                    $image = !empty($article['content'][$i]['string']) ? $urlNews . $article['content'][$i]['string'] : '';
+                    break;
+                }
+            }
+
+            if (!$image) {
+                $image = $article['cover_image'];
+            }
+        }
+    } else {
+        $geturl = str_replace("#", "/", str_replace("?", "/", $_SERVER['REQUEST_URI']));
+        $request = explode('/', $geturl);
+
+        foreach(array_keys($request) as $key)
+        {
+            if (empty($key) ) continue;
+
+            if ($request[$key]=='y' && $key==1 && !empty($request[$key+1]))
+            {
+                $urlChat .= 'id_post='.intval($request[$key+1]).'&';
+            } elseif ($request[$key]=='a' && $key==1 && !empty($request[$key+1])) {
+                $urlChat .= 'id_post='.intval($request[$key+1]).'&';
+            } elseif ($request[$key]=='h' && !empty($request[$key+1])) {
+                $urlChat .= 'id_hotel=' . (intval($request[$key+1]) + 100000).'&';
+            } elseif ($request[$key]=='p' && !empty($request[$key+1])) {
+                $urlChat .= 'id_hotel=' . (intval($request[$key+1]) * -1 - 100000).'&';
+            } elseif ($request[$key]=='b' && !empty($request[$key+1])) {
+                $urlChat .= 'id_hobbi=' . intval($request[$key+1]).'&';
+            } elseif ($request[$key]=='bonus' && $key==1) {
+                $title .='Личные бонусы';
+            } elseif ($request[$key]=='fav' && $key==1) {
+                $title .='Мои заметки';
+            } elseif ($request[$key]=='profile' && $key==1) {
+                $title .='Настройки';
+            } elseif ($request[$key]=='l' && $key==1) {
+                $title .='Новости и обзоры';
+            } elseif ($request[$key]=='r' && $key==1) {
+                $title .='Рейтинги отелей';
+            }
+
+            if ($request[$key]=='a' && $urlChat) break;
+
+        }
+
+        if (empty($title) && $urlChat != $urlChat0 ) $chat = curlChat($urlChat);
+
+        if ($chat['code'] === 0) {
+            $title = !empty($chat['name_strana']) ? '' . $chat['name_strana'] : '';
+            $title .= !empty($chat['name_hotel_kurrot']) ? '. ' . $chat['name_hotel_kurrot'] : '';
+            $title .= !empty($chat['name_hobbi']) ? '. ' . $chat['name_hobbi'] : '';
+            $title .= !empty($title) ? (empty($chat['business']) ?' (бизнес-чат)' : ' (чат)') : '';
+            $description = $chat['description'];
+        }
+    }
+
+    $result['title'] = $title;
+    $result['image'] = $image;
+    $result['description'] = $description;
+
+    return $result;
+}
+
+$result = getData($_SERVER['REQUEST_URI']);
+
+if (!empty($result['title'])) {
+    $title = $result['title'];
+    $image = $result['image'];
+    $description = $result['description'];
+} else {
+    $title = 'Клуб тревел-экспертов. Рейтинги отелей';
+    $image = '/images/logo_app.png';
+    $description = 'Рейтинги и прямое бронирование отелей. Клуб тревел-экспертов';
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--  <meta charset="utf-8" />-->
+<!--  <meta http-equiv="X-UA-Compatible" content="IE=edge" />-->
+<!--  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no,minimum-scale=1,maximum-scale=1.00001,viewport-fit=cover" />-->
+<!--  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">-->
+<!--  <meta http-equiv="Pragma" content="no-cache">-->
+<!--  <meta http-equiv="Expires" content="0">-->
+<!--  <meta property="og:title" content="<?php echo $title; ?>"/>-->
+<!--  <meta property="og:description" content="<?php echo $description; ?>"/>-->
+<!--  <meta property="og:image" content="<?php echo $image; ?>"/>-->
+<!--  <meta property="og:locale" content="ru_RU" />-->
+<!--  <meta name="description" content="<?php echo $description; ?>"/>-->
+<!--  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />-->
+<!--  <link rel="manifest" href="/manifest.json" />-->
+<!--  <link rel="icon" href="/favicon.ico" />-->
+<!--  <script src="/ResizeObserver.min.js"></script>-->
+<!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>-->
+<!--  <script src="https://maps.googleapis.com/maps/api/js?key="></script>-->
+<!--  <style id="expo-reset">-->
+<!--      /* These styles make the body full-height */-->
+<!--      html,-->
+<!--      body {-->
+<!--          height: 100%;-->
+<!--          margin: 0;-->
+<!--          overflow: hidden;-->
+<!--          scroll-behavior: smooth;-->
+<!--      }-->
+<!--      /* These styles disable body scrolling if you are using <ScrollView> */-->
+<!--      body {-->
+<!--          overflow: hidden;-->
+<!--          scroll-behavior: smooth;-->
+<!--      }-->
+<!--      /* These styles make the root element full-height */-->
+<!--      #root {-->
+<!--          display: flex;-->
+<!--          height: 100%;-->
+<!--          flex: 1;-->
+
+<!--          /*background-image: url("/images/bg.jpg");*/-->
+<!--          /*background-repeat: no-repeat;*/-->
+<!--          /*background-attachment: fixed;*/-->
+<!--          /*background-size: cover;*/-->
+<!--      }-->
+<!--  </style>-->
+  <script src="https://maps.googleapis.com/maps/api/js?key="></script>
+</head>
+
+<body>
+  <!-- Use static rendering with Expo Router to support running without JavaScript. -->
+  <noscript>
+    You need to enable JavaScript to run this app.
+  </noscript>
+  <!-- The root element for your Expo app. -->
+  <div id="root">
+    <script language="javascript">
+      var voice = document.location.href.indexOf('/voice') > -1 || document.location.href.indexOf('/exauth') > -1
+      !voice ? document.write('<div style="position: absolute; margin: auto; top: 0; right: 0; bottom: 0; left: 0; width: 187px; height: 61px; "><img src="/images/logo-banner_app.png" width="187" height="51" /><span>&nbsp;&nbsp;Инициализация...</span></div>') : null;
+    </script>
+  </div>
+  <script>
+    var stl = `body,html{width:100%;height:100%}`;
+
+    if (window.self !== window.top) {
+      stl = `body,html{width:100%;height:98% !important}`;
+    }
+
+    var style = document.createElement('style');
+    style.innerHTML = stl;
+    document.head.appendChild(style);
+  </script>
+<!--  <script src="/bootLoader.js"></script>-->
+<!--  <script>-->
+<!--    var loader = new BundleLoader();-->
+
+<!--    loader.onload = function() {}-->
+<!--    loader.load("/_expo/static/js/web/entry-1ad309e1ab94b234a7a480995e8ea267.js");-->
+<!--  </script>-->
+</body>
+</html>

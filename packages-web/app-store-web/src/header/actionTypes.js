@@ -1,0 +1,1 @@
+export const CHANGE_HEADER_PARAMS = 'header.CHANGE_HEADER_PARAMS'

@@ -1,0 +1,36 @@
+diff --git a/node_modules/react-native-dates/src/index.js b/node_modules/react-native-dates/src/index.js
+index b5c35c9..7741f64 100644
+--- a/node_modules/react-native-dates/src/index.js
++++ b/node_modules/react-native-dates/src/index.js
+@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
+     backgroundColor: 'rgb(52,120,246)'
+   },
+   dayText: {
+-    color: 'rgb(0, 0, 0)',
++    color: 'rgb(97,97,97)',
+     fontWeight: '600'
+   },
+   dayDisabledText: {
+@@ -251,6 +251,7 @@ export default class Dates extends Component {
+   props: DatesType;
+
+   render() {
++
+     const previousMonth = () => {
+       this.setState({ focusedMonth: this.state.focusedMonth.add(-1, 'M') });
+     };
+@@ -263,11 +264,11 @@ export default class Dates extends Component {
+       <View style={styles.calendar}>
+         <View style={styles.heading}>
+           <TouchableOpacity onPress={previousMonth}>
+-            <Text>{'< Previous'}</Text>
++            <Text>{'< Пред'}</Text>
+           </TouchableOpacity>
+-          <Text>{this.state.focusedMonth.format('MMMM')}</Text>
++          <Text style={{ fontWeight: 'bold', color: 'rgb(66,154,220)' }}>{this.state.focusedMonth.format('MMMM') + ' ' + this.state.focusedMonth.format('YYYY')}</Text>
+           <TouchableOpacity onPress={nextMonth}>
+-            <Text>{'Next >'}</Text>
++            <Text>{'След >'}</Text>
+           </TouchableOpacity>
+         </View>
+         <Month

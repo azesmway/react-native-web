@@ -1,0 +1,725 @@
+// import { GoogleOAuthProvider } from '@react-oauth/google'
+
+// import LoginFast from './components/fast'
+// const LoginFast = React.lazy(() => import('./components/fast'))
+// const LoginDialog = React.lazy(() => import('./components/login'))
+// const GoogleAuth = React.lazy(() => import('./components/auth'))
+// const PopUp = React.lazy(() => import('./components/popup'))
+// import PopUp from './components/popup'
+import isArray from 'lodash/isArray'
+import orderBy from 'lodash/orderBy'
+import { Component } from 'react'
+import { Text, TouchableOpacity, View } from 'react-native'
+
+const { getAppConfig, getAppConstants, getAuthLink, setAppConfig, setAppLangInterface, setAuthLink, setStartAppChat } = window.onlinetur.storage
+const { PATH_MATCH } = window.onlinetur.constants
+const { device } = window.onlinetur
+
+class AppRootWeb extends Component {
+  constructor(props) {
+    super(props)
+
+    const { webEventController, webController, rootprops } = this.props.utils
+
+    Object.assign(this, new webEventController(this, rootprops))
+    Object.assign(this, new webController(this, rootprops))
+
+    setAuthLink(this.props.location.search)
+
+    const { matchPath, t } = this.props.utils.utils
+    const match = matchPath(this.props.pathname, {
+      path: PATH_MATCH,
+      exact: true,
+      strict: false
+    })
+
+    this.state = {
+      isLoading: true,
+      loadingText: t('common.loading'),
+      isOpenLogin: false,
+      isOpenLoginOAuth: false,
+      pushNotification: false,
+      openAlert: false,
+      isSotr: false,
+      errorUrl: '',
+      match: match,
+      text: 'text' in this.props.search ? decodeURI(this.props.search.text) : undefined,
+      openNullScreen: false
+    }
+
+    this.uniqueId = ''
+    this.startLink = ''
+  }
+
+  shouldComponentUpdate(nextProps, nextState, nextContext) {
+    const { diffObject } = this.props.utils.core
+    const { location, user, offline, appLangInterface, pathname } = this.props
+    const { isOpenLogin, openAlert, isOpenLoginOAuth, openNullScreen, isLoading } = this.state
+
+    if (isLoading !== nextState.isLoading) {
+      return true
+    }
+
+    if (pathname !== nextProps.pathname) {
+      return true
+    }
+
+    if (isOpenLogin !== nextState.isOpenLogin || openAlert !== nextState.openAlert || isOpenLoginOAuth !== nextState.isOpenLoginOAuth || openNullScreen !== nextState.openNullScreen) {
+      return true
+    }
+
+    const u = diffObject(user, nextProps.user)
+
+    if (u) {
+      return true
+    }
+
+    if (offline !== nextProps.offline) {
+      return true
+    }
+
+    if (appLangInterface !== nextProps.appLangInterface) {
+      return true
+    }
+
+    return false
+  }
+
+  async componentDidUpdate(prevProps, prevState) {
+    const { onPostMessage } = this.props.utils.services.chatServicePost
+    const { switchLang } = this.props.utils.functions
+    const { pathname } = this.props.location
+    const { user, location, history, setUser, appLangInterface, setFilter, offline, messagesOffline, removeMessageOffline, changeOfflineMode } = this.props
+    const { matchPath, setLocale } = this.props.utils.utils
+
+    const match = matchPath(this.props.pathname, {
+      path: PATH_MATCH,
+      exact: true,
+      strict: false
+    })
+
+    if (match && match.path.includes('/exauth')) {
+      return
+    }
+
+    const url = getAppConfig().electornApp ? '/' + getAppConfig().baseUrl.substring(0, getAppConfig().baseUrl.indexOf('Users')).split('/')[1] + '/' : '/'
+
+    if (!match && prevProps.pathname !== url && pathname === url) {
+      this.openChatWithLink()
+
+      return
+    }
+
+    if (prevProps.appLangInterface !== appLangInterface) {
+      let data = {}
+      data = {
+        selectedCountry: '-1',
+        selectedHotel: '-1',
+        selectedHobby: '-1',
+        selectedPlace: '-1',
+
+        selectedCountryName: '',
+        selectedHotelName: '',
+        selectedHobbyName: '',
+        selectedPlaceName: '',
+
+        selectedCountryHide: 0,
+        selectedHotelHide: 0,
+        selectedHobbyHide: 0,
+        selectedPlaceHide: 0,
+
+        selectedFav: '0',
+        selectedFavName: '',
+
+        chatAgent: false,
+        selectedAgent: '-1',
+        selectedAgentName: '-1',
+
+        selectCategory: {}
+      }
+      setAppLangInterface(switchLang(appLangInterface))
+      setLocale(appLangInterface)
+      setFilter(data)
+      this.openChatWithLink()
+
+      return
+    }
+
+    // if (prevProps.pathname.indexOf('/auth') > -1 && pathname === url) {
+    //   this.closeLoginWindow()
+    //
+    //   return
+    // }
+
+    if (prevProps.pathname.indexOf('/oauth') > -1 && pathname === url) {
+      this.closeLoginWindowOAuth()
+
+      return
+    }
+
+    // if (!prevProps.notifyNews && notifyNews) {
+    //   this.interval = setInterval(async () => {
+    //     await this.setNewNews()
+    //   }, 100000)
+    // } else if (prevProps.notifyNews && !notifyNews) {
+    //   clearInterval(this.interval)
+    // }
+    this.initFirebase()
+    if (!prevProps.user.id_user && user.id_user) {
+      if (user.referral && user.referral.ref_user && user.referral.ref_user.id_hotel_manager && user.is_sotr === 0) {
+        this.initFirebase()
+        history('/y/0/h/' + user.referral.ref_user.id_hotel_manager)
+      } else {
+        this.openChatWithLink()
+        this.initFirebase()
+      }
+
+      return
+    }
+
+    if (!prevProps.pathname.includes('/m/') && pathname.includes('/m/')) {
+      await this.isNotEmptyUser(location, history, user, setUser)
+
+      return
+    }
+
+    if (!user.device && pathname.indexOf('/auth') > -1 && !this.state.isOpenLogin) {
+      this.authOpen()
+
+      return
+    }
+
+    if (
+      !user.device &&
+      !this.state.isOpenLoginOAuth &&
+      (pathname.indexOf('/s') > -1 || pathname.indexOf('/y/') > -1 || pathname.indexOf('/l') > -1 || pathname.indexOf('/n/') > -1 || pathname.indexOf('/w') > -1)
+    ) {
+      this.authOpenOAuth()
+
+      return
+    }
+
+    const { testConnection, getFormData } = this.props.utils.mobile
+
+    if (prevProps.offline === true && offline === false) {
+      for (let i = 0; i < messagesOffline.length; i++) {
+        testConnection().then(async isConnected => {
+          if (isConnected) {
+            try {
+              let result = {}
+              if (messagesOffline[i].imgs) {
+                result = await this.postImage(messagesOffline[i], messagesOffline[i].imgs)
+              } else {
+                result = await onPostMessage(getFormData(JSON.parse(messagesOffline[i].message)), messagesOffline[i].url)
+              }
+
+              if (result && result.code === 0) {
+                removeMessageOffline(messagesOffline[i].id)
+              }
+            } catch (e) {
+              changeOfflineMode(true)
+            }
+          }
+        })
+      }
+    }
+  }
+
+  componentDidMount = async () => {
+    const { chatServicePost, AppData, chatServiceGet, postVK } = this.props.utils.services
+    const { t, firebase, getLocale, setLocale } = this.props.utils.utils
+    const { onPostVKUsers } = chatServicePost
+    const { switchLang } = this.props.utils.functions
+    const { createUUID } = this.props.utils.core
+    const { getStartAppReg } = chatServiceGet
+    const { getAddUserVK, postVKWeb } = postVK
+    const { setAppNewsBackground } = AppData
+    const { queryString } = this.props.utils
+    const {
+      history,
+      appLangInterface,
+      location,
+      ratingFilter,
+      changeRatingFilter,
+      appCount,
+      setAppCount,
+      setCategories,
+      setAllCountries,
+      setAllAgent,
+      setFilter,
+      setUser,
+      setAgentTowns,
+      user,
+      changeOfflineMode,
+      androidIdInstall,
+      setAndroidIdInstall,
+      setRef,
+      setVK,
+      userVK,
+      isPostVK,
+      isPostGroupVK,
+      currentCategory,
+      userMenu,
+      news,
+      setNewsNew,
+      urlPost,
+      isFriendVK,
+      changeMyRatingLocal,
+      changeMyRatingServer,
+      search,
+      fcmToken,
+      expoToken,
+      setDevice
+    } = this.props
+    const { match } = this.state
+    const logOut = 'logout' in search
+
+    if (isPostVK || isPostGroupVK) {
+      setAppNewsBackground(user, currentCategory, userMenu, 0, false, '', fcmToken, expoToken, device).then(async result => {
+        if (result.news && result.news.length > 0) {
+          const newNews = []
+          let ref = '?c=' + (user.referral && user.referral.code ? user.referral.code : '')
+
+          for (const newsOne of result.news) {
+            const res = news.filter(n => Number(n.id) === Number(newsOne.id))[0]
+
+            if (!res) {
+              newNews.push(newsOne)
+            }
+          }
+
+          let n
+          if (newNews.length > 0) {
+            n = orderBy(newNews, 'id', 'desc')
+            setNewsNew(n)
+          }
+
+          if (isPostVK && n) {
+            const notPost = n.filter(function (item) {
+              return item.vkontakte === false
+            })
+
+            if (notPost && notPost.length > 0) {
+              let url = ''
+              const arr = []
+
+              for (let i = 0; i < 3; i++) {
+                url = getAppConfig().homepage + '/n/' + notPost[i].id + ref
+
+                if (urlPost === '1') {
+                  url = getAppConstants().url_news + '/i' + notPost[i].id
+                }
+
+                let message = '\uD83C\uDF34 ' + t('screens.profile.vk.news') + getAppConfig().domainMain + ' ☀️'
+
+                if (notPost[i].type === 18) {
+                  message = '\uD83C\uDF34 ' + t('screens.profile.vk.overview') + getAppConstants().url_rf + ' ☀️'
+                }
+
+                arr.push({
+                  message: message,
+                  url: url
+                })
+              }
+
+              await postVKWeb(userVK, setVK, userVK.user_id, arr)
+            }
+          }
+
+          if (isPostGroupVK && n) {
+            /* empty */
+          }
+        }
+      })
+    }
+
+    if (isFriendVK) {
+      const userVKAdd = await getAddUserVK(user.device.token, user.android_id_install)
+
+      if (userVKAdd.code === 0 && userVKAdd.user) {
+        if (isArray(userVKAdd.user)) {
+          for (let i = 0; i < userVKAdd.user.length; i++) {
+            if (userVKAdd.user[i].id) {
+              $.ajax({
+                url: `https://api.vk.com/method/friends.add?user_id=${userVKAdd.user[i].id}&access_token=${userVK.access_token}&v=5.95`,
+                method: 'get',
+                headers: {
+                  Authorization: 'Bearer ' + userVK.access_token
+                },
+                dataType: 'jsonp',
+                success: data => {
+                  if (data && data.response) {
+                    // success = true
+                    // AlertWeb.alert(t('common.attention'), 'Постинг в ВК активирован удачно!')
+                  }
+                },
+                error: (xhr, textStatus, error) => {
+                  console.log('xhr.statusText', xhr.statusText)
+                  console.log('textStatus', textStatus)
+                  console.log('error', error)
+                }
+              })
+            }
+          }
+        } else {
+          if (userVKAdd.user.id) {
+            $.ajax({
+              url: `https://api.vk.com/method/friends.add?user_id=${userVKAdd.user.id}&access_token=${userVK.access_token}&v=5.95`,
+              method: 'get',
+              headers: {
+                Authorization: 'Bearer ' + userVK.access_token
+              },
+              dataType: 'jsonp',
+              success: data => {
+                if (data && data.response) {
+                  // success = true
+                  // AlertWeb.alert(t('common.attention'), 'Постинг в ВК активирован удачно!')
+                }
+              },
+              error: (xhr, textStatus, error) => {
+                console.log('xhr.statusText', xhr.statusText)
+                console.log('textStatus', textStatus)
+                console.log('error', error)
+              }
+            })
+          }
+        }
+      }
+
+      const timeHour = new Date().toLocaleTimeString('ru-RU', { hour12: false, hour: 'numeric' })
+      const timeMinute = new Date().toLocaleTimeString('ru-RU', { hour12: false, minute: 'numeric' })
+
+      let startGet = false
+
+      if (Number(timeHour) === 9 && Number(timeMinute) > 0 && Number(timeMinute) < 10) {
+        startGet = true
+      }
+
+      if (Number(timeHour) === 15 && Number(timeMinute) > 0 && Number(timeMinute) < 10) {
+        startGet = true
+      }
+
+      if (Number(timeHour) === 21 && Number(timeMinute) > 0 && Number(timeMinute) < 10) {
+        startGet = true
+      }
+
+      if (startGet) {
+        $.ajax({
+          // eslint-disable-next-line max-len
+          url: `https://api.vk.com/method/friends.getSuggestions?access_token=${userVK.access_token}&v=5.199&fields=first_name,last_name,friend_status,last_seen,online,deactivated,status,verified,relation,bdate,email,city,domain,nickname,photo_100,sex,is_friend,screen_name`,
+          method: 'get',
+          headers: {
+            Authorization: 'Bearer ' + userVK.access_token
+          },
+          dataType: 'jsonp',
+          success: data => {
+            if (data && data.response && data.response.items.length > 0) {
+              let body = new FormData()
+              body.append('token', user.device.token)
+              body.append('android_id_install', user.android_id_install)
+              body.append('vk_user_owner', userVK.user_id)
+              body.append('users', JSON.stringify(data.response.items))
+              onPostVKUsers(body).then()
+            }
+          },
+          error: (xhr, textStatus, error) => {
+            console.log('xhr.statusText', xhr.statusText)
+            console.log('textStatus', textStatus)
+            console.log('error', error)
+          }
+        })
+      }
+    }
+
+    if (match && match.path.includes('/u')) {
+      if (!userVK.user_id) {
+        try {
+          const vk = queryString.parse(location.search)
+
+          if (vk.code) {
+            const { Auth } = this.props.utils
+            let result = await Auth.exchangeCode(vk.code, vk.device_id)
+
+            result.vk = vk
+            result.date = new Date()
+            setVK(result)
+          }
+        } catch (e) {
+          console.log('error', e)
+        }
+      }
+    }
+
+    if (match && match.path.includes('/exauth')) {
+      if ('full' in search) {
+        this.setState({ isOpenLogin: true, openNullScreen: false })
+      } else if ('quick' in search) {
+        this.setState({ isOpenLoginOAuth: true, openNullScreen: false })
+      } else {
+        this.setState({ isOpenLogin: true, openNullScreen: false })
+      }
+
+      return
+    }
+
+    const isFirefox = navigator.userAgent.toLowerCase().includes('firefox')
+    const isSafari = navigator.userAgent.toLowerCase().includes('safari')
+
+    if (isFirefox || isSafari) {
+      window.addEventListener('offline', this.updateConnectionStatus)
+      window.addEventListener('online', this.updateConnectionStatus)
+    } else {
+      navigator.connection.addEventListener('change', this.updateConnectionStatus)
+    }
+
+    this.interval = setInterval(async () => {
+      this.updateConnectionStatus()
+    }, 10000)
+
+    if (logOut) {
+      firebase &&
+        firebase
+          .auth()
+          .signOut()
+          .then(function () {
+            setCategories([])
+            setAllCountries([])
+            setAllAgent([])
+            const filter = {
+              selectedCountry: '-1',
+              selectedHotel: '-1',
+              selectedHobby: '-1',
+              selectedPlace: '-1',
+
+              selectedCountryName: '',
+              selectedHotelName: '',
+              selectedHobbyName: '',
+              selectedPlaceName: '',
+
+              selectedCountryHide: 0,
+              selectedHotelHide: 0,
+              selectedHobbyHide: 0,
+              selectedPlaceHide: 0,
+
+              selectedFav: '0',
+              selectedFavName: '',
+
+              searchFav: '',
+              idUserFav: '0',
+              nameUserFav: '',
+
+              chatAgent: null,
+              selectedAgent: '-1',
+              selectedAgentName: '',
+
+              selectCategory: {},
+              selectSearch: {}
+            }
+
+            setFilter(filter)
+            setUser({})
+            setAgentTowns([])
+            changeOfflineMode(false)
+            changeMyRatingLocal([])
+            changeMyRatingServer([])
+            history('/')
+            window.location.reload()
+          })
+          .catch(function (error) {
+            console.log(error)
+          })
+
+      return
+    }
+
+    if (!appLangInterface) {
+      setAppLangInterface(getLocale())
+      setLocale(switchLang(getLocale()))
+      setAppLangInterface(switchLang(getLocale()))
+    } else {
+      setLocale(switchLang(appLangInterface))
+      setAppLangInterface(switchLang(appLangInterface))
+    }
+
+    if (!appCount) {
+      setAppCount(0)
+    }
+
+    let a = getAppConfig()
+    a.categoryChat = 'cat' in search ? Number(search.cat) : -1
+    setAppConfig(a)
+
+    if ('serviceWorker' in navigator) {
+      if (!navigator.serviceWorker.onmessage) {
+        navigator.serviceWorker.onmessage = function (event) {
+          if (event && event.data && event.data.action && event.data.action === 'notificationclick') {
+            history(event.data.openurl)
+          } else {
+            navigator.serviceWorker.getRegistrations().then(async function (registrations) {
+              var reg = registrations[0]
+
+              if (reg && event.data.notification && event.data.notification.title) {
+                const notificationTitle = event.data.notification.title
+                const notificationOptions = {
+                  body: event.data.notification.body,
+                  icon: getAppConstants().url_main + '/imgs_logo/logoonlinetur.png',
+                  data: event.data.data
+                }
+
+                await reg.showNotification(notificationTitle, notificationOptions)
+              }
+            })
+          }
+        }
+      }
+    }
+
+    const android_id_install = createUUID()
+
+    if (!androidIdInstall) {
+      let ref = ''
+
+      if ('c' in search) {
+        ref = search.c
+        setRef(ref)
+        await getStartAppReg(android_id_install, ref)
+      }
+
+      if (setAndroidIdInstall) {
+        setAndroidIdInstall(android_id_install)
+      }
+    }
+
+    setDevice({
+      manufacturer: device.manufacturer,
+      phone_model: device.phone_model,
+      vers_os: device.vers_app,
+      vers_app: device.vers_app,
+      url: device.url
+    })
+
+    this.fastAuth()
+
+    if ('referrer' in search) {
+      const { cookies } = this.props.utils
+
+      cookies.save('referrer', search.referrer, { path: '/' })
+    }
+
+    if (!ratingFilter) {
+      const filter = {
+        selectedCountries: [],
+        selectedPlaces: [],
+        indexCategory: 0
+      }
+      changeRatingFilter(filter)
+    }
+
+    if (match) {
+      if (match && (match.params.y || match.params.a)) {
+        setStartAppChat(true)
+      }
+
+      this.openChatWithLink(match)
+    } else {
+      const m = {
+        isExact: true,
+        params: {},
+        path: '/',
+        url: '/'
+      }
+
+      this.openChatWithLink(m)
+    }
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval)
+  }
+
+  render() {
+    const { queryString, Toast } = this.props.utils
+    const { user, setUser, location, history, offline, pathname, search } = this.props
+    const { isOpenLogin, pushNotification, openAlert, isOpenLoginOAuth, match, openNullScreen, text, isLoading } = this.state
+    const logOut = 'logout' in search
+    let fastLogin = !!getAuthLink().includes('?fast')
+
+    if (fastLogin) {
+      const fastData = queryString.parse(getAuthLink().replace('?fast', ''))
+
+      if (!fastData.hash) {
+        fastLogin = false
+      }
+    }
+
+    // if (match && match.path.includes('/exauth') && isOpenLogin) {
+    //   return (
+    //     <Suspense>
+    //       <LoginDialog isOpenLogin={isOpenLogin} handleCloseLogin={this.closeLogin} setUser={setUser} history={history} authOpenOAuth={this.authOpenOAuth} />
+    //     </Suspense>
+    //   )
+    // }
+    //
+    // if (match && match.path.includes('/exauth') && isOpenLoginOAuth && !fastLogin) {
+    //   return (
+    //     <Suspense fallback={<div>Loading...</div>}>
+    //       <GoogleAuth handleCloseLogin={this.closeLogin} setUser={setUser} history={history} />
+    //     </Suspense>
+    //   )
+    // }
+
+    // if (openNullScreen) {
+    //   return (
+    //     <View style={{ width: '100%', height: '100%', flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    //       <TouchableOpacity
+    //         onPress={() => {
+    //           this.setState({ openNullScreen: false }, () => {
+    //             history('/r')
+    //           })
+    //         }}>
+    //         <Text style={{ fontSize: 16, fontWeight: 'bold', color: 'blue', textDecorationLine: 'underline' }}>{'Перейти на главную'}</Text>
+    //       </TouchableOpacity>
+    //     </View>
+    //   )
+    // }
+
+    // return (
+    //     <GoogleOAuthProvider clientId="723349202322-eeuefbtgalv8cnobpqg25sb8bm11e130.apps.googleusercontent.com">
+    //       {/*{!isEmpty(user) && pushNotification ? <PopUp initMessaging={this.initMessaging} breakMessaging={this.breakMessaging} /> : <></>}*/}
+    //       <View style={{ flex: 1 }}>
+    //         {this.props.children}
+    //         {/*{isOpenLogin && pathname === '/auth' && !fastLogin ? (*/}
+    //         {/*  <LoginDialog isOpenLogin={isOpenLogin} handleCloseLogin={this.closeLogin} setUser={setUser} history={history} authOpenOAuth={this.authOpenOAuth} />*/}
+    //         {/*) : (*/}
+    //         {/*  <></>*/}
+    //         {/*)}*/}
+    //         {isOpenLoginOAuth && !user.id_user && pathname.indexOf('mini') === -1 && pathname.indexOf('/w') === -1 && !fastLogin ? (
+    //           // <Suspense fallback={<div>Loading...</div>}>
+    //           //   <GoogleAuth handleCloseLogin={this.closeLogin} setUser={setUser} history={history} />
+    //           // </Suspense>
+    //           <></>
+    //         ) : (
+    //           <></>
+    //         )}
+    //         {/*{fastLogin && <LoginFast setUser={setUser} />}*/}
+    //       </View>
+    //     </GoogleOAuthProvider>
+    // )
+
+    return (
+      <>
+        <Toast ref={ref => (global.toast = ref)} />
+        {offline ? (
+          <View style={{ width: '100%', height: 20, backgroundColor: 'red', alignItems: 'center' }}>
+            <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>{'Ошибка передачи данных. Возможно проблемы с интернетом.'}</Text>
+          </View>
+        ) : (
+          <></>
+        )}
+        {this.props.children}
+      </>
+    )
+  }
+}
+
+export default AppRootWeb

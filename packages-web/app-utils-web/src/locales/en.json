@@ -1,0 +1,905 @@
+{
+	"action": {
+		"filter": {
+			"requestPermissionCancel": "Cancel",
+			"requestPermissionMessage": "We use your location to show where you are on the map",
+			"requestPermissionOk": "OK",
+			"requestPermissionTitle": "We need to access your location"
+		}
+	},
+	"chat": {
+		"component": {
+			"chat": {
+				"errorText1": "Log in",
+				"errorText2": "to ask questions in chats.",
+				"input": "Enter text...",
+				"loading": "Loading messages ...",
+				"selectCountry": "Please select a country to send your message!",
+				"uploadText": "Maximum file size: 5mb, allowed formats: jpg, jpeg, gif, png",
+				"uploadText360": "Upload photo 360",
+				"uploadPdf": "Upload PDF"
+			}
+		},
+		"load": {
+			"getOldMessages": {
+				"nullMessage": "\"Information\",",
+				"themeCountry": "Ask any question to country experts - ",
+				"themeCountry2": ", resort or hotel",
+				"themeInfo": "Ask any question to the experts on the topic - "
+			}
+		},
+		"model": {
+			"chatModel": {
+				"cancel": "Cancel",
+				"countryNotFound": "The country was not found for the given data. Select manually.",
+				"geo": "By geo",
+				"hotelNotFound": "The hotel was not found based on the specified data. Select manually.",
+				"name": "By name",
+				"selectHotel": "Choose a hotel?"
+			},
+			"onEvents": {
+				"action": "Action",
+				"actionCreate": "Add a promotion",
+				"addAction": "Add action",
+				"addContact": "The selected contact will be sent to the chat, do you agree?",
+				"addFoto": "Add foto",
+				"addFoto360": "Add foto 360",
+				"addPdf": "File PDF",
+				"banOff": "Remove ban",
+				"banOn": "Ban user",
+				"bron": "Booking is possible only after authorization!",
+				"camera": "Camera",
+				"cancel": "Cancel",
+				"complain": "Complain",
+				"confirm": "Select the chat of the hotel, resort or country in which you want to confirm your location.",
+				"contact": "Contact",
+				"copy": "Copy",
+				"currentChat": "To the current chat",
+				"del": "Delete",
+				"edit": "Edit",
+				"fav": "Add to bookmarks",
+				"finding": "Confirm hotel stay is available only in mobile version! You can download the application following the link ",
+				"gallery": "Gallery",
+				"like": "Like, it costs 50 rubles. Are you sure you want to transfer 50 bonus rubles from your account to the author of this post?",
+				"likeError": "You are trying to like your post!",
+				"picture360": "Picture 360",
+				"price": "Request for price",
+				"reply": "Reply",
+				"selectChat": "Select chat",
+				"share": "Share",
+				"user": "All user posts",
+				"userBan": "ban the user?",
+				"userNotBan": "remove a ban from a user?",
+				"video": "Video",
+				"warnOff": "Remove warning",
+				"warnOn": "Set warning",
+				"zagrebon": "Share on Zagrebon",
+				"replay": "Thread of correspondence"
+			}
+		}
+	},
+	"common": {
+		"actionSelection": "Action selection",
+		"addChannel": "Add channel",
+		"agree": "Agree",
+		"allCountries": "All countries",
+		"appTitle": "Chat with vacation experts and hotels. News and reviews.",
+		"application": "Application",
+		"apply": "Apply",
+		"attention": "Attention!",
+		"attentionGeo": "The geolocation function must be enabled in the phone setting.",
+		"avatar": "Upload an avatar",
+		"beside": "Nearby",
+		"build": "Build",
+		"cancel": "Cancel",
+		"send": "Send",
+		"category": "CATEGORY",
+		"cats": "Categories",
+		"change": "Change",
+		"changeName": "Change name",
+		"chat": "Select a chat",
+		"close": "Close",
+		"complain": "Do you want to complain about this message? Write the text of your complaint.",
+		"complainSuccess": "Your complaint has been successfully submitted.",
+		"confirm": "Confirm",
+		"contact": "Contacts",
+		"done": "Done",
+		"empty": "No data!",
+		"enterMessage": "Enter your message...",
+		"enterName": "Enter your name",
+		"errorName": "Name is not filled in!",
+		"errorServer": "Please try another section or try again later.\nError connecting to server ",
+		"errorTitle": "Error!",
+		"expert": "Your holiday expert:",
+		"fav": "My notes",
+		"init": "Initialization",
+		"invite": " To Invite",
+		"like": "To like the post, authorization is required!",
+		"loadVideo": "Download video",
+		"loading": "Loading...",
+		"message": "Message!",
+		"messageDelete": "Are you sure you want to delete your post?",
+		"messagesAdd": "Message added to bookmarks",
+		"more": "More",
+		"moreAction": "Read more...",
+		"name": "Name",
+		"news": "News & Reviews",
+		"reviews": "Reviews",
+		"no": "Not",
+		"notAnswer": "There are no replies to the message yet!",
+		"notAuth": "This function is only accessible after authorization!",
+		"notConnect": "Please try another section or try again later.\nNo connecting to server ",
+		"notEdit": "You cannot edit another user post.",
+		"notLike": "You are trying to like your post!",
+		"notNet": "There is no Internet access. Function not available!",
+		"notRemove": "You cannot delete another user post.",
+		"nullDate": "At the moment, no data!",
+		"ok": "OK",
+		"pass": "Password",
+		"pay": "Pay",
+		"playerText": "Choose Online Tour! And have a great rest!",
+		"reset": "Reset",
+		"save": "Save",
+		"select": "Select",
+		"settings": "Settings",
+		"share": "Share",
+		"turnOn": "Turn on",
+		"warnOff": "take off",
+		"warnOn": "take on",
+		"warnText": " warning for this message?",
+		"yes": "Yes",
+		"youWant": "Do you really want ",
+		"find": "Find",
+		"business": "BUSINESS CHATS",
+		"country": "COUNTRIES",
+		"tur": "Tour",
+		"addContent": "Paste content",
+		"remove": "Delete!",
+		"block": "If you block a user, you will no longer see their posts and neither will they see yours!\nDo you really want to block a user?",
+		"blockSuccess": "User blocked"
+	},
+	"components": {
+		"chat": {
+			"actionmodal": {
+				"component": {
+					"actionmodal": {
+						"actionCreate": "Add a promotion",
+						"addImage": "Add image",
+						"afterPayment": "Text after payment",
+						"arrivalDate": "Arrival date",
+						"arrivalTime": "Arrival time",
+						"beforePayment": "Text before payment",
+						"bron": "Reservation",
+						"button": "Text on armor button",
+						"cancellation": "Free cancellation days before arrival",
+						"cashback": "Deposit (cashback) to the client",
+						"currency": "Currency",
+						"date": "Arrival date",
+						"dateFrom": "Arrival date from",
+						"dateTo": "Arrival date to",
+						"hour": "Hours before arrival",
+						"night": "Nights",
+						"price": "Price per room",
+						"quantity": "Number of rooms",
+						"room": "Room Description",
+						"select": "- Select -",
+						"selectFoto": "Select a photo",
+						"term": "Free cancellation days before arrival:",
+						"time": "Check-in time",
+						"uploadText": "Maximum file size: 5mb, allowed formats: jpg, jpeg, gif, png"
+					},
+					"requestmodal": {
+						"arrivalDate": "Arrival date",
+						"arrivalTime": "Arrival time",
+						"bron": "Reservation",
+						"currency": "Currency",
+						"date": "Arrival date",
+						"night": "Nights",
+						"price": "Price per room",
+						"request": "Request for price",
+						"rooms": "Select number",
+						"select": "- Select -"
+					}
+				}
+			}
+		},
+		"common": {
+			"articlemenu": {
+				"setting": "Setting",
+				"share": "Share link",
+				"vk": "Posting in VK"
+			},
+			"chatfooter": {
+				"about": "About",
+				"bron": "Reservation",
+				"contact": "Contacts, map",
+				"price": "The best prices"
+			},
+			"hotelmenu": {
+				"map": "Hotel on the map",
+				"place": "Place on the map",
+				"share": "Share link"
+			},
+			"leftmenu": {
+				"actions": "Prices and Promotions",
+				"bonus": "My bonus",
+				"forum": "Chats by country",
+				"help": "Help",
+				"login": "Log in",
+				"logout": "Log out",
+				"main": "Main",
+				"mobile": "Install mobile version",
+				"mybron": "My Orders",
+				"news": "News, reviews",
+				"noAuth": "Log in",
+				"notes": "Notes",
+				"profi": "Business-Сhats",
+				"rating": "Ratings of hotels",
+				"settings": "Settings",
+				"share": "Share",
+				"mysales": "My Sales"
+			},
+			"mainheader": {
+				"camera": "Camera",
+				"gallery": "Gallery",
+				"share": "Share",
+				"shareText": "Referral link to the mobile application, copy it and you can send it to your friends.",
+				"iexpert": "Business-account"
+			},
+			"newsfooter": {
+				"news": "+News",
+				"overview": "+Overview",
+				"sound": "Sound",
+				"subtitle": "Booknews - News Feed"
+			},
+			"radio": {
+				"errorSelect": "No radio station selected",
+				"label": "RADIO Europa Plus",
+				"notAccess": "Currently the radio station is not available.",
+				"radios": "Radio by country",
+				"textLoading": "Loading radio stations...",
+				"title": "No. 1 in Russia!"
+			}
+		},
+		"header": {
+			"appheader": {
+				"close": "Close",
+				"nothotel": "HOTEL NOT FOUND!!!",
+				"request": "Enter your request...",
+				"search": "Search text in chat...",
+				"searchRating": "Search by hotel...",
+				"hotelPage": "Page hotel",
+				"placePage": "Page place"
+			},
+			"buttons": {
+				"sharebuttons": {
+					"fbCancel": "You have refused to publish!",
+					"fbError": "Post error:",
+					"fbSuccess": "The publication was successful!",
+					"news": "🌴 News from OnlineTu.ru ☀️",
+					"overview": "🌴 Review from travel experts ОнлайнТур.рф ☀️",
+					"postVK": "Do you want to post this news on VKontakte?",
+					"postVKSuccess": "The post has been successfully published.",
+					"settings": "Settings",
+					"shareFB": "Share on Facebook",
+					"shareLink": "Share link",
+					"shareVK": "Share on VK",
+					"vkAuth": "In order to post information in VK, go through the authorization in the application settings."
+				}
+			},
+			"centercomponent": {
+				"answers": "Answers",
+				"cat": "Category selection",
+				"chat": "Chat selection",
+				"chats": "For all chats",
+				"fav": "Selected Notes",
+				"profi": "Business-Сhats",
+				"thread": "The whole thread of correspondence",
+				"user": "All posts by this author"
+			},
+			"leftcomponent": {
+				"answers": "Answers",
+				"thread": "The whole thread of correspondence",
+				"user": "All posts by this author"
+			},
+			"rightcomponent": {
+				"fbCancel": "You have refused to publish!",
+				"fbError": "Post error:",
+				"fbSuccess": "The publication was successful!",
+				"news": "🌴 News from OnlineTu.ru ☀️",
+				"openFilter": "Open filter",
+				"overview": "🌴 Review from travel experts ОнлайнТур.рф ☀️",
+				"postVK": "Do you want to post this news on VKontakte?",
+				"postVKSuccess": "The post has been successfully published.",
+				"settings": "Settings",
+				"shareFB": "Share on Facebook",
+				"shareLink": "Share link",
+				"shareVK": "Share on VK",
+				"vkAuth": "In order to post information in VK, go through the authorization in the application settings."
+			},
+			"selectcategory": {
+				"cat": "Select a category"
+			}
+		}
+	},
+	"containers": {
+		"accordionprofile": {
+			"agent": "Business Access",
+			"agentTown": "Enter your city",
+			"bonus": "Bonus program ( +100 rub. )",
+			"chatPush": "Chat notifications",
+			"fun": "Business user settings",
+			"lang": "Language selection/Язык чатов",
+			"langInt": "Language interface/Язык интрефейса",
+			"langText": "Select application language",
+			"newsPush": "News notifications",
+			"posts": "Reposting news on social networks",
+			"profiPush": "Business chat notifications",
+			"user": "User data"
+		},
+		"action": {
+			"accommodation": ", Accommodation: ",
+			"action": "Creation of a promotion",
+			"auth1": "The promotion is only available",
+			"auth2": "to an authorized user !!!",
+			"booked": "You booked",
+			"bron": "Advance payment required for booking ",
+			"bron1": "p.\nPay with bonus rubles?",
+			"cashback": "(cashback before ",
+			"checkin": "Check-in: ",
+			"completed": "Completed",
+			"d1": ", days: ",
+			"d2": "Days: ",
+			"edit": "Editing a stock",
+			"food": "Food: ",
+			"nights": "Nights: ",
+			"place": "Places left: ",
+			"price": ", Price: ",
+			"select": "Select",
+			"view": "View promotions",
+			"success": "You have successfully submitted your booking request."
+		},
+		"alertdialog": {
+			"complain": "Your complaint has been successfully submitted."
+		},
+		"bubble": {
+			"banOff": "Remove ban",
+			"banOn": "Ban user",
+			"complain": "Complain",
+			"copy": "Copy",
+			"del": "Delete",
+			"edit": "Edit",
+			"fav": "Add to bookmarks",
+			"reply": "Reply",
+			"share": "Share",
+			"user": "All user posts",
+			"warnOff": "Remove warning",
+			"warnOn": "Set warning",
+			"zagrebon": "Share on Zagrebon",
+			"order": "Order: ",
+			"title": "Promotion description",
+			"block": "Block a user"
+		},
+		"contactlist": {
+			"access": "The application needs access to your contacts.",
+			"denied": "Access to address book denied!",
+			"search": "Search by name ..."
+		},
+		"filterdialog": {
+			"cat": "Categories",
+			"country": "Country",
+			"filter": "Filter",
+			"filterchat": "Filter by chat",
+			"filternull": "Hotel not found!",
+			"hobby": "Themes",
+			"hotels": "Hotels",
+			"km": " km",
+			"loading": "Loading hotels...",
+			"m": " m",
+			"more": "More",
+			"resorts": "Resorts",
+			"search": "Search by hotel..."
+		},
+		"logindialog": {
+			"auth": "Authorization",
+			"authError": "Authorisation Error!",
+			"authRetry": "Click the retry button or try again later!",
+			"authSuccess": "You have successfully logged in to the chat!",
+			"email": "A confirmation email has been sent to your email address. Follow the link in the activation email.",
+			"repeat": "Repeat",
+			"text": "To connect to the chats of tourists and travel experts in all countries and hotels, you must log in.",
+			"text2": "Select one of the chat login options."
+		},
+		"messagetext": {
+			"hide": "Hide...",
+			"more": "More..."
+		},
+		"request": {
+			"accommodation": ", Accommodation: ",
+			"bron": "View reservation/price...",
+			"checkin": "Check-in: ",
+			"compensation": "We offer the following cancellation compensation on our part:",
+			"food": "Food: ",
+			"message": "Enter your message",
+			"nights": "Nights: ",
+			"price": ", Price: ",
+			"question": "!\n\nAre you sure you want to take this action?",
+			"status": "Status: ",
+			"surcharge": "For additional payment: ",
+			"status_request": "Application status"
+		},
+		"uploadimage": {
+			"load": "Uploading photos",
+			"select": "Select a photo",
+			"uploadText": "Maximum file size: 5mb, allowed formats: jpg, jpeg, gif, png"
+		}
+	},
+	"core": {
+		"mobile": {
+			"addContact": "A new contact has been successfully added.",
+			"chat": "Select chat",
+			"chatGeo": "Define chat by Geo",
+			"confirm": "To confirm your stay at the hotel/resort, upload a photo with geo-data to the chat or send your location. ",
+			"contact": "Failed to add contact.",
+			"contacts": "Contacts",
+			"current": "The user is now in this hotel",
+			"far": "You are close to the specified hotel/resort!",
+			"geo": "The selected photo (s) does not have geo data! Send a message to the current chat?",
+			"hotel": "in a hotel ",
+			"location": "We need to access your location",
+			"locationMes": "We use your location to show where you are on the map",
+			"newContact": "New contact",
+			"notConfirm": "Failed to confirm your stay at the hotel/resort!",
+			"notGeo": "Geolocation must be enabled in the phone setting.",
+			"notLocation": "Failed to confirm your presence at the hotel!",
+			"pic12": "You cannot upload more than 12 pictures!",
+			"resort": "at the resort ",
+			"select": "Select Photo",
+			"selectPdf": "Select file",
+			"send": "Send to current chat?",
+			"town": "Enter your city",
+			"user": "The user was ",
+			"yesConfirm": "Your presence at this hotel/resort has been confirmed!"
+		},
+		"popup": {
+			"message": "In order to receive browser notifications about new messages in chats, you need to enable notifications.",
+			"title": "Chat notifications"
+		},
+		"pressbutton": {
+			"like": "Like, it costs 50 rubles. Are you sure you want to transfer 50 bonus rubles from your account to the author of this post?",
+			"likeError": "You are trying to like your post!"
+		},
+		"pressmenu": {
+			"banOff": "remove a ban from a user?",
+			"banOn": "ban the user?",
+			"off": "Warning cleared successfully!",
+			"off1": "Ban successfully lifted!",
+			"on": "Warning set successfully!",
+			"on1": "Ban successfully installed!",
+			"share": "Link to the message, copy it and you can send it to your friends.",
+			"warnOff": "remove the warning from the given message?",
+			"warnOn": "set a warning to this message?",
+			"you": "Do you want to "
+		}
+	},
+	"screens": {
+		"actions": {
+			"action": "The hotel is running a promotion! For more information, click \"More\".",
+			"actionsHotel": "List of stocks",
+			"deposit": "Deposit bonuses:",
+			"freepay": "Free cancellation period:",
+			"info": "Hotel details",
+			"moment": "Instant confirmation",
+			"myRequest": "You have submitted an application",
+			"night": "Nights: ",
+			"noroom": "No room description",
+			"open": "Open hotel details",
+			"pay": "To surcharge: ",
+			"price": "Price: ",
+			"req": "Upon request",
+			"request": "On request at your price",
+			"title": "Prices and Promotions"
+		},
+		"addchanel": {
+			"address": "Channel address",
+			"examples": "Examples of news feeds:",
+			"info": "News channels can be found or created at https://zagrebon.com",
+			"name": "Channel name",
+			"subtitle": "Add new channel",
+			"title": "News channels",
+			"zagrebon": "Zagrebon.com - Tours from Moscow otm@mail.ru"
+		},
+		"article": {
+			"action": "ORDER-ACTION",
+			"auth": "Login",
+			"discuss": "DISCUSS",
+			"info": "To read news and reviews you need ",
+			"link": "Copy the link to the message and you can send it to your friends.",
+			"news": "🌴 News from OnlineTu.ru ☀️",
+			"order": "Order-Rest",
+			"overview": "🌴 Review from travel experts ОнлайнТур.рф ☀️",
+			"rating": "Rating:",
+			"sound": "Sound",
+			"stop": "Stop",
+			"subtitle": "NEWS, REVIEWS",
+			"subtitle1": "News from OnlineTur.ru",
+			"subtitle2": "Review from OnlineTur.ru",
+			"vk": "You are not authorized to repost in VK. Go to the settings section and log in."
+		},
+		"auth": {
+			"authemail": {
+				"component": {
+					"authemail": {
+						"auth": "Authorization",
+						"auths": "Login",
+						"done": "Done",
+						"email": "Email",
+						"emailError": "Invalid email address entered!",
+						"emailText": "Enter your email address",
+						"login": "Log in",
+						"name": "Name",
+						"nameError": "Name is not filled in!",
+						"nameText": "Enter your name",
+						"pass": "Password",
+						"passAgain": "The password again",
+						"passAgainText": "Your password again",
+						"passError": "Password mismatch!",
+						"passText": "Your password",
+						"reg": "Register",
+						"regs": "Register"
+					}
+				},
+				"model": {
+					"authemailmodel": {
+						"auth": "Authorization",
+						"email": "An email has been sent to you with an activation link.",
+						"emailUse": "Email is already in use!",
+						"emailValid": "Invalid email address entered!",
+						"login": "Log in",
+						"nameNull": "Name is not filled in!",
+						"notUser": "Authorization, user does not exist!",
+						"pass6": "Password must be 6 or more characters!",
+						"passError": "Password mismatch!",
+						"passNull": "Password not entered!"
+					}
+				}
+			}
+		},
+		"authscreen": {
+			"apple1": "Authorization with",
+			"apple2": "Apple Sign-In service.",
+			"apple3": "Requires your name and email address.",
+			"auth": "Authorization ...",
+			"email": "Authorization via email. You can use your personal mailbox.",
+			"fb": "Login with Facebook service. If you have a Facebook account, you can log in to the application using it.",
+			"google": "Authorization using the Google service. If you have a Google service account - GMail, in addition to authorization in the application, you can publish videos on Youtube and place in the application, as well as use other Google services.",
+			"subtitle": "Choice of method",
+			"title": "AUTHORIZATION"
+		},
+		"authvk": {
+			"auth": "VKontakte authorization",
+			"id": "ID VKontakte",
+			"post": "Publish news in your feed",
+			"post1": "When this function is activated, all news, promotions of the site ",
+			"post2": " will be automatically published in your feed.",
+			"subtitle": "Publishing VKontakte news",
+			"title": "VKontakte account"
+		},
+		"bonus": {
+			"subtitle": "Personal bonuses",
+			"title": "BONUSES"
+		},
+		"contacts": {
+			"address": "Address:",
+			"site": "Site:",
+			"subtitle": "Hotel data",
+			"tel": "Telephone:",
+			"title": "Contacts"
+		},
+		"help": {
+			"subtitle": "Application use",
+			"title": "HELP"
+		},
+		"mainscreen": {
+			"actions": "Prices and Promotions",
+			"chat": "Chats by country",
+			"exp": "Expert service",
+			"mybron": "My Orders",
+			"news": "News, reviews",
+			"order": "Order any tour",
+			"profi": "Business-Сhats",
+			"rating": "Ratings of hotels",
+			"search": "Search tours online - №1",
+			"tour": "Tour search"
+		},
+		"map": {
+			"title": "Hotel on the map",
+			"place": "Place on the map"
+		},
+		"phone": {
+			"errorVerify": "Phone verification error!",
+			"mes": "Message text for users",
+			"other": "Additional functions",
+			"phone": "Phone",
+			"subtitle": "Phone verification",
+			"tel": "Enter phone numbers",
+			"title": "Verification",
+			"verify": "Verification",
+			"view": "Show number to my clients"
+		},
+		"player": {
+			"subtitle": "Voice over text",
+			"text": "Choose Online Tour! And have a great rest!",
+			"title": "Gramophone"
+		},
+		"profile": {
+			"agent": {
+				"model": {
+					"modelagent": {
+						"agent": "Agent access successfully ",
+						"agentTown": "Enter your city",
+						"set": "established!",
+						"unset": "revoked!"
+					}
+				}
+			},
+			"avatar": {
+				"title": "AVATAR"
+			},
+			"bonus": {
+				"bonus": "Bonuses",
+				"tel": "Phone verification",
+				"telText": "Enter number here"
+			},
+			"langs": {
+				"cat": "LANGUAGES"
+			},
+			"other": {
+				"mess": "Enter your message text",
+				"order": "Ordering a service and Searching for tours",
+				"text": "The text to be displayed to users",
+				"view": "Show number to my clients"
+			},
+			"pushchat": {
+				"pushOff": "Alert successfully removed!",
+				"pushOn": "Alert successfully set!"
+			},
+			"pushnews": {
+				"text": "New News Alerts"
+			},
+			"pushprofi": {
+				"pushOff": "Notification successfully removed!",
+				"pushOn": "Notification successfully set!"
+			},
+			"vk": {
+				"auth": "Authorization",
+				"id": "ID VKontakte",
+				"news": "News from ",
+				"not": "- Not -",
+				"overview": "Review from holiday experts",
+				"post1": "When this function is activated, all news, promotions of the site ",
+				"post2": " will be automatically published in your feed.",
+				"public": "Publish news in your feed",
+				"text1": "Automatic posting of news and reviews in VK. When this function is activated, all news of the sites promotions ",
+				"text2": " will be automatically published in your feed.",
+				"web": "Use web version",
+				"zagrebon": "Use the Zagrebon site"
+			}
+		},
+		"profilescreen": {
+			"agent": "Agent access",
+			"agentText": "Enabling agent access",
+			"agentTown": "Enter your city",
+			"bonus": "Bonuses",
+			"bonusProg": "Bonus program",
+			"fun": "Additional functions",
+			"funText": "Agent function settings",
+			"lang": "LANG",
+			"langItem": "Language chats/Язык чатов",
+			"langInt": "Language interface/Язык интрефейса",
+			"langText": "Select application language",
+			"mes": "Message text for users",
+			"newnews": "Enable notifications for new news",
+			"news": "News from ",
+			"order": "Ordering a service and Searching for tours",
+			"other": "Additionally",
+			"overview": "Review from holiday experts ",
+			"pass": "Enter password",
+			"push": "Alerts",
+			"pushchat": "Configure chat notifications",
+			"pushnews": "Configure news notifications",
+			"pushprofi": "Configure profi notifications",
+			"social": "Reposting news on social networks",
+			"subtitle": "User data",
+			"tel": "Enter phone numbers",
+			"title": "SETTINGS",
+			"type": "Post type:",
+			"user": "User data",
+			"verify": "Phone verification",
+			"view": "Show number to my clients",
+			"vk": "Reposting in VK",
+			"vkAuth": "VK authorization",
+			"vkLogin": "You are logged into VK",
+			"vkLogout": "Exit VK",
+			"vkNotAuth": "You are not logged into VK",
+			"vkText": "Reposting on social networks",
+			"vkpost1": "When this function is activated, all news, promotions of the site ",
+			"vkpost2": " will be automatically published in your feed.",
+			"web": "Web version",
+			"zagrebon": "Zagrebon",
+			"remove": "Account deleting",
+			"removeText": "Complete account deletion",
+			"removeNow": "Delete account now",
+			"removeQuestion": "Are you sure you want to completely delete your account with the loss of all data and bonuses?",
+			"removeTitle": "To delete your account, enter the code sent to your email ***",
+			"removePlaceholder": "Code from email"
+		},
+		"push": {
+			"subtitle": "Configure notifications",
+			"title": "Notifications"
+		},
+		"ratings": {
+			"components": {
+				"countries": {
+					"countries": "Countries"
+				},
+				"platforms": {
+					"platforms": "Platforms"
+				},
+				"filter": {
+					"any": "Any",
+					"cat": "Hotel category",
+					"country": "All countries",
+					"filter": "Filter",
+					"myhotels": "Add hotels to my rating",
+					"pattern": "Search by name",
+					"resorts": "All resorts",
+					"selectCountries": "Select countries",
+					"selectResort": "Choose a Resort",
+					"not_find": "Hotels not found!",
+					"platform": "Platforms"
+				},
+				"hclass": {
+					"hclass": "Categories"
+				},
+				"hotel": {
+					"subtitle": "Hotel Description"
+				},
+				"hotels": {
+					"cat": "Hotel category"
+				},
+				"itemmenu": {
+					"action": "Stock numbers!!!",
+					"bron": "Book",
+					"chat": "Hotel chat",
+					"delcat": "Remove from category",
+					"delrating": "Remove from my rating",
+					"hotel": "Description of the hotel",
+					"reviews": "Reviews for the hotel",
+					"ask": "Ask"
+				},
+				"listhotels": {
+					"alert": "Click on the heart icon to add the hotel to My Rating.",
+					"search": "Search by hotel...",
+					"title": "Rating of hotels"
+				},
+				"myhotels": {
+					"alert": "Add hotels from the general list and give them a relative rating to determine their location.",
+					"not": "NOT",
+					"refresh": "UPDATE RATING AND DETERMINE PLACES",
+					"save": "Rating data saved!",
+					"saveRating": "Rating preservation",
+					"sortHotels": "Hotels will be sorted by rating and transferred to the server to participate in the overall rating. Do you want to save the data?",
+					"subtitle": "Choose a nomination",
+					"title": "My rating hotels",
+					"winner1": "DEFINE",
+					"winner2": "PLACES",
+					"yes": "YES",
+					"quest": "You have not saved any hotel rating changes from your personal list. Leave the page anyway?"
+				},
+				"places": {
+					"resorts": "Resorts"
+				},
+				"ratings": {
+					"all": "All the experts",
+					"my": "My nominations",
+					"final": "My rating",
+					"points": "Specify the importance in points: "
+				}
+			}
+		},
+		"reviews": {
+			"subtitle": "Hotel Reviews",
+			"title": "Reviews"
+		},
+		"screennews": {
+			"controller": {
+				"flatlist": {
+					"title": "News from "
+				}
+			},
+			"news": {
+				"link": "News & Reviews by Country ->",
+				"not": "There are no news or reviews for this filter.",
+				"selectCountry": "Select country",
+				"subtitle": "Leisure Experts",
+				"title": "NEWS, REVIEWS"
+			},
+			"newsflatlist": {
+				"not": "There are no news or reviews for this filter.",
+				"title": "News & Reviews by Country"
+			},
+			"newsfooter": {
+				"news": "+News",
+				"reviews": "+Reviews"
+			},
+			"newsmenu": {
+				"newsmenu": {
+					"cat": "Categories showing",
+					"selectCountry": "Select country"
+				}
+			}
+		},
+		"settings": {
+			"free": "Free",
+			"help": "Help",
+			"memory": "Freeing memory",
+			"memoryFree": "Freeing memory",
+			"memoryFreeMes": "Application memory has been cleared successfully!",
+			"player": "Gramophone",
+			"post": "Publishing articles on VKontakte",
+			"push": "Configure notifications",
+			"question": "Are you sure you want to clear the memory?",
+			"subtitle": "Settings and functions",
+			"title": "Settings",
+			"verify": "Phone verification"
+		},
+		"viewhotel": {
+			"address": "Hotel address:",
+			"bonus": "Bonuses",
+			"bron": "My Orders",
+			"contact": "Contacts",
+			"error": "No hotel details found!",
+			"news": "News & Reviews",
+			"phone": "Phone:",
+			"price": "Prices (action)",
+			"profile": "Profile",
+			"site": "Website:",
+			"speech": "Reviews",
+			"subtitle": "Chats / Hobbies",
+			"title": "HOTEL CHAT",
+			"more": "More...",
+			"headerHotel": "HOTEL DATA",
+			"headerPay": "PAYMENT",
+			"ask": "Ask"
+		},
+		"viewplace": {
+			"headerPlace": "PLACE DATA"
+		},
+		"webpage": {
+			"errorVerify": "Phone verification error!"
+		}
+	},
+	"tooltip": {
+		"answer": "Ответить",
+		"answers": "Ответов: ",
+		"bron": "Бронь",
+		"chat": "Спросить",
+		"delcat": "Из номинации",
+		"delrating": "Из рейтинга",
+		"fav": "В Заметки",
+		"like": "Нравится: ",
+		"review": "Отзывы",
+		"subject": "Описание",
+		"more": "Еще...",
+		"edit": "Редактировать",
+		"del": "Удалить",
+		"add": "Добавить номер",
+		"share": "Поделиться",
+		"copy": "Скопировать",
+		"tur": "Все туры",
+		"actions": "Акции",
+		"book": "Обзор",
+		"book_edit": "+Обзор"
+	}
+}

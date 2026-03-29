@@ -1,0 +1,13 @@
+export const CHANGE_HOTELS = 'rating.CHANGE_HOTELS'
+export const CHANGE_RATING_LOCAL = 'rating.CHANGE_RATING_LOCAL'
+export const CHANGE_RATING_SERVER = 'rating.CHANGE_RATING_SERVER'
+export const CHANGE_TIME = 'rating.CHANGE_TIME'
+export const CHANGE_FILTER = 'rating.CHANGE_FILTER'
+export const CHANGE_ALERT_HOTELS = 'rating.CHANGE_ALERT_HOTELS'
+export const CHANGE_ALERT_MYHOTELS = 'rating.CHANGE_ALERT_MYHOTELS'
+export const CHANGE_CRITERIA = 'rating.CHANGE_CRITERIA'
+export const SAVE_RATING_CACHE = 'rating.SAVE_RATING_CACHE'
+export const CHANGE_MY_RATING = 'rating.CHANGE_MY_RATING'
+export const CHANGE_SELECTED_RATING_CATEGORY = 'rating.CHANGE_SELECTED_RATING_CATEGORY'
+export const EDIT_RATING = 'rating.EDIT_RATING'
+

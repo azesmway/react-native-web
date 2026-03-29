@@ -1,0 +1,12 @@
+{
+  "name": "app-drawer-web",
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": true,
+  "main": "src/index.jsx",
+  "scripts": {
+    "build": "vite build && cp -r ./images ./dist"
+  },
+  "dependencies": {},
+  "peerDependencies": {}
+}

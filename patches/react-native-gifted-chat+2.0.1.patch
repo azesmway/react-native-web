@@ -1,0 +1,939 @@
+diff --git a/node_modules/react-native-gifted-chat/lib/Avatar.js b/node_modules/react-native-gifted-chat/lib/Avatar.js
+index 70ce1d7..6dd7bd4 100644
+--- a/node_modules/react-native-gifted-chat/lib/Avatar.js
++++ b/node_modules/react-native-gifted-chat/lib/Avatar.js
+@@ -1,8 +1,70 @@
+ import PropTypes from 'prop-types';
+ import React from 'react';
+-import { StyleSheet, View, } from 'react-native';
++import { StyleSheet, View, Platform } from 'react-native';
+ import GiftedAvatar from './GiftedAvatar';
+ import { StylePropType, isSameUser, isSameDay } from './utils';
++import _ from "lodash";
++const stylesUser = {
++    left: StyleSheet.create({
++        container: {
++            marginLeft: Platform.OS === 'web' ? 0 : 5,
++        },
++        onTop: {
++            // alignSelf: 'flex-start',
++        },
++        onBottom: {},
++        image: {
++            height: 36,
++            width: 36,
++            borderRadius: 18,
++        },
++    }),
++    right: StyleSheet.create({
++        container: {
++            marginRight: Platform.OS === 'web' ? 0 : 5,
++        },
++        onTop: {
++            // alignSelf: 'flex-start',
++        },
++        onBottom: {},
++        image: {
++            height: 36,
++            width: 36,
++            borderRadius: 18,
++        },
++    }),
++};
++const stylesNoUser = {
++    left: StyleSheet.create({
++        container: {
++            marginRight: 5,
++        },
++        onTop: {
++            // alignSelf: 'flex-start',
++        },
++        onBottom: {},
++        image: {
++            height: 36,
++            width: 36,
++            borderRadius: 18,
++        },
++    }),
++    right: StyleSheet.create({
++        container: {
++            marginRight: 5,
++        },
++        onTop: {
++            // alignSelf: 'flex-start',
++        },
++        onBottom: {},
++        image: {
++            height: 36,
++            width: 36,
++            borderRadius: 18,
++
++        },
++    }),
++};
+ const styles = {
+     left: StyleSheet.create({
+         container: {
+@@ -40,6 +102,10 @@ export function Avatar(props) {
+     if (renderAvatar === null) {
+         return null;
+     }
++    let styles = stylesUser
++    if (!props.user._id) {
++        styles = stylesNoUser
++    }
+     if (!showAvatarForEveryMessage &&
+         currentMessage &&
+         messageToCompare &&
+diff --git a/node_modules/react-native-gifted-chat/lib/Composer.js b/node_modules/react-native-gifted-chat/lib/Composer.js
+index 7bbf561..afeab34 100644
+--- a/node_modules/react-native-gifted-chat/lib/Composer.js
++++ b/node_modules/react-native-gifted-chat/lib/Composer.js
+@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
+         flex: 1,
+         marginLeft: 10,
+         fontSize: 16,
+-        lineHeight: 16,
++        lineHeight: 20,
+         ...Platform.select({
+             web: {
+                 paddingTop: 6,
+@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
+             },
+         }),
+         marginTop: Platform.select({
+-            ios: 6,
++            ios: 10,
+             android: 0,
+             web: 6,
+         }),
+diff --git a/node_modules/react-native-gifted-chat/lib/GiftedAvatar.js b/node_modules/react-native-gifted-chat/lib/GiftedAvatar.js
+index 1a32d67..0f3fc26 100644
+--- a/node_modules/react-native-gifted-chat/lib/GiftedAvatar.js
++++ b/node_modules/react-native-gifted-chat/lib/GiftedAvatar.js
+@@ -4,6 +4,14 @@ import { Image, Text, TouchableOpacity, View, StyleSheet, } from 'react-native';
+ import Color from './Color';
+ import { StylePropType } from './utils';
+ const { carrot, emerald, peterRiver, wisteria, alizarin, turquoise, midnightBlue, } = Color;
++function getRandomHexColor() {
++    const letters = '0123456789ABCDEF';
++    let color = '#';
++    for (let i = 0; i < 6; i++) {
++        color += letters[Math.floor(Math.random() * 16)];
++    }
++    return color;
++}
+ const styles = StyleSheet.create({
+     avatarStyle: {
+         justifyContent: 'center',
+@@ -12,6 +20,13 @@ const styles = StyleSheet.create({
+         height: 40,
+         borderRadius: 20,
+     },
++    avatarStyleNull: {
++        justifyContent: 'center',
++        alignItems: 'center',
++        width: 40,
++        height: 40,
++        borderRadius: 20
++    },
+     avatarTransparent: {
+         backgroundColor: Color.backgroundTransparent,
+     },
+@@ -34,6 +49,9 @@ export default class GiftedAvatar extends React.Component {
+             }
+         };
+         this.handleOnLongPress = () => { };
++        this.state = {
++            imageLoad: false
++        }
+     }
+     setAvatarColor() {
+         const userName = (this.props.user && this.props.user.name) || '';
+@@ -66,15 +84,44 @@ export default class GiftedAvatar extends React.Component {
+     }
+     renderAvatar() {
+         const { user } = this.props;
++        const { imageLoad } = this.state;
+         if (user) {
+             if (typeof user.avatar === 'function') {
+                 return user.avatar([styles.avatarStyle, this.props.avatarStyle]);
+             }
+             else if (typeof user.avatar === 'string') {
+-                return (<Image source={{ uri: user.avatar }} style={[styles.avatarStyle, this.props.avatarStyle]}/>);
++                let n = 'N'
++                if (user.name && user.name[0]) {
++                    n = user.name[0].charAt(0).toUpperCase()
++                }
++                return (
++                  <>
++                    {imageLoad && <Image source={{ uri: user.avatar }} style={[styles.avatarStyle, this.props.avatarStyle]}/>}
++                    {!imageLoad && (
++                      <>
++                        <Image source={{ uri: user.avatar }} style={[styles.avatarStyle, this.props.avatarStyle]} onLoad={() => this.setState({ imageLoad: true })}/>
++                        <View style={[styles.avatarStyleNull, { position: 'absolute', backgroundColor: getRandomHexColor() }]}><Text style={{ color: '#fff' }}>{n}</Text></View>
++                      </>
++                    )}
++                  </>
++                );
+             }
+             else if (typeof user.avatar === 'number') {
+-                return (<Image source={user.avatar} style={[styles.avatarStyle, this.props.avatarStyle]}/>);
++                let n = 'N'
++                if (user.name && user.name[0]) {
++                    n = user.name[0].charAt(0).toUpperCase()
++                }
++                return (
++                  <>
++                    {imageLoad && <Image source={user.avatar} style={[styles.avatarStyle, this.props.avatarStyle]}/>}
++                    {!imageLoad && (
++                      <>
++                        <Image source={user.avatar} style={[styles.avatarStyle, this.props.avatarStyle]} onError={error => console.log('error', error)} onLoad={() => this.setState({ imageLoad: true })}/>
++                          <View style={[styles.avatarStyleNull, { position: 'absolute', backgroundColor: getRandomHexColor() }]}><Text style={{ color: '#fff' }}>{n}</Text></View>
++                      </>
++                    )}
++                  </>
++                );
+             }
+         }
+         return null;
+diff --git a/node_modules/react-native-gifted-chat/lib/GiftedChat.js b/node_modules/react-native-gifted-chat/lib/GiftedChat.js
+index a91d004..af76580 100644
+--- a/node_modules/react-native-gifted-chat/lib/GiftedChat.js
++++ b/node_modules/react-native-gifted-chat/lib/GiftedChat.js
+@@ -1,6 +1,6 @@
+ import PropTypes from 'prop-types';
+ import React from 'react';
+-import { Platform, StyleSheet, View, KeyboardAvoidingView, } from 'react-native';
++import { Platform, StyleSheet, View, KeyboardAvoidingView, Dimensions, StatusBar } from 'react-native';
+ import { ActionSheetProvider, } from '@expo/react-native-action-sheet';
+ import uuid from 'uuid';
+ import dayjs from 'dayjs';
+@@ -22,6 +22,7 @@ import { Send } from './Send';
+ import { GiftedChatContext } from './GiftedChatContext';
+ import { Time } from './Time';
+ import GiftedAvatar from './GiftedAvatar';
++import { s, vs } from 'react-native-size-matters';
+ import { MIN_COMPOSER_HEIGHT, MAX_COMPOSER_HEIGHT, DEFAULT_PLACEHOLDER, TIME_FORMAT, DATE_FORMAT, TEST_ID, } from './Constant';
+ dayjs.extend(localizedFormat);
+ class GiftedChat extends React.Component {
+@@ -45,6 +46,7 @@ class GiftedChat extends React.Component {
+             text: undefined,
+             messages: undefined,
+         };
++
+         this.getLocale = () => this._locale;
+         this.onKeyboardWillShow = (e) => {
+             this.handleTextInputFocusWhenKeyboardShow();
+@@ -155,7 +157,7 @@ class GiftedChat extends React.Component {
+                 this.setState({
+                     messagesContainerHeight: this._keyboardHeight > 0
+                         ? this.getMessagesContainerHeightWithKeyboard()
+-                        : this.getBasicMessagesContainerHeight(),
++                        : this.getBasicMessagesContainerHeight()
+                 });
+             }
+             if (this.getIsFirstLayout() === true) {
+@@ -193,20 +195,18 @@ class GiftedChat extends React.Component {
+         this.initLocale();
+         this.setMessages(messages || []);
+         this.setTextFromProp(text);
++        console.log('gift componentDidMount')
+     }
+     componentWillUnmount() {
+         this.setIsMounted(false);
+     }
+     componentDidUpdate(prevProps = {}) {
+-        const { messages, text, inverted } = this.props;
+-        if (this.props !== prevProps) {
++        const { messages, text, inverted, isScrollToBottom } = this.props;
++        if (this.props.messages.length !== prevProps.messages.length) {
+             this.setMessages(messages || []);
+         }
+-        if (inverted === false &&
+-            messages &&
+-            prevProps.messages &&
+-            messages.length !== prevProps.messages.length) {
+-            setTimeout(() => this.scrollToBottom(false), 200);
++        if (isScrollToBottom) {
++            setTimeout(() => this.scrollToBottom(false), 1000);
+         }
+         if (text !== prevProps.text) {
+             this.setTextFromProp(text);
+@@ -348,10 +348,11 @@ class GiftedChat extends React.Component {
+         }
+     }
+     renderMessages() {
+-        const { messagesContainerStyle, ...messagesContainerProps } = this.props;
++        const { messagesContainerStyle, heightInputToolbar, ...messagesContainerProps } = this.props;
++        const h = Platform.OS === 'web' ? this.state.messagesContainerHeight : (Platform.OS === 'android' ? (this.state.messagesContainerHeight - this._keyboardHeight - heightInputToolbar) : this._keyboardHeight > 0 ? this.state.messagesContainerHeight + vs(60) : this.state.messagesContainerHeight + vs(24))
+         const fragment = (<View style={[
+                 {
+-                    height: this.state.messagesContainerHeight,
++                    height: h,
+                 },
+                 messagesContainerStyle,
+             ]}>
+@@ -502,9 +503,13 @@ GiftedChat.defaultProps = {
+     maxInputLength: null,
+     forceGetKeyboardHeight: false,
+     inverted: true,
++    isScrollToBottom: true,
++    isFetchNewMessages: false,
+     extraData: null,
+     minComposerHeight: MIN_COMPOSER_HEIGHT,
+     maxComposerHeight: MAX_COMPOSER_HEIGHT,
++    headerHeight: 0,
++    heightInputToolbar: 0
+ };
+ GiftedChat.propTypes = {
+     messages: PropTypes.arrayOf(PropTypes.object),
+@@ -563,18 +568,22 @@ GiftedChat.propTypes = {
+     maxInputLength: PropTypes.number,
+     forceGetKeyboardHeight: PropTypes.bool,
+     inverted: PropTypes.bool,
++    isScrollToBottom: PropTypes.bool,
++    isFetchNewMessages: PropTypes.bool,
+     textInputProps: PropTypes.object,
+     extraData: PropTypes.object,
+     minComposerHeight: PropTypes.number,
+     maxComposerHeight: PropTypes.number,
+     alignTop: PropTypes.bool,
++    heightInputToolbar: PropTypes.number
+ };
+ const styles = StyleSheet.create({
+     container: {
+-        flex: 1,
++        flex: 1
+     },
+     wrapper: {
+         flex: 1,
++        backgroundColor: 'transparent'
+     },
+ });
+ export * from './Models';
+diff --git a/node_modules/react-native-gifted-chat/lib/MessageContainer.js b/node_modules/react-native-gifted-chat/lib/MessageContainer.js
+index 6bdf6da..75353d1 100644
+--- a/node_modules/react-native-gifted-chat/lib/MessageContainer.js
++++ b/node_modules/react-native-gifted-chat/lib/MessageContainer.js
+@@ -1,244 +1,360 @@
+ import PropTypes from 'prop-types';
+ import React from 'react';
+-import { FlatList, View, StyleSheet, TouchableOpacity, Text, Platform, } from 'react-native';
+-import { LoadEarlier } from './LoadEarlier';
++import {
++  FlatList,
++  View,
++  StyleSheet,
++  TouchableOpacity,
++  Text,
++  Platform,
++  ScrollView,
++  ActivityIndicator
++} from 'react-native';
++import {LoadEarlier} from './LoadEarlier';
+ import Message from './Message';
+ import Color from './Color';
+ import TypingIndicator from './TypingIndicator';
+-import { StylePropType } from './utils';
+-import { warning } from './logging';
++import {StylePropType} from './utils';
++import {warning} from './logging';
++
+ const styles = StyleSheet.create({
+-    container: {
+-        flex: 1,
+-    },
+-    containerAlignTop: {
+-        flexDirection: 'row',
+-        alignItems: 'flex-start',
+-    },
+-    contentContainerStyle: {
+-        flexGrow: 1,
+-        justifyContent: 'flex-start',
+-    },
+-    emptyChatContainer: {
+-        flex: 1,
+-        transform: [{ scaleY: -1 }],
+-    },
+-    headerWrapper: {
+-        flex: 1,
+-    },
+-    listStyle: {
+-        flex: 1,
+-    },
+-    scrollToBottomStyle: {
+-        opacity: 0.8,
+-        position: 'absolute',
+-        right: 10,
+-        bottom: 30,
+-        zIndex: 999,
+-        height: 40,
+-        width: 40,
+-        borderRadius: 20,
+-        backgroundColor: Color.white,
+-        alignItems: 'center',
+-        justifyContent: 'center',
+-        shadowColor: Color.black,
+-        shadowOpacity: 0.5,
+-        shadowOffset: { width: 0, height: 0 },
+-        shadowRadius: 1,
+-    },
++  container: {
++    flex: 1,
++  },
++  containerAlignTop: {
++    flexDirection: 'row',
++    alignItems: 'flex-start',
++  },
++  contentContainerStyle: {
++    flexGrow: 1,
++    justifyContent: 'flex-start',
++  },
++  emptyChatContainer: {
++    flex: 1,
++    transform: [{scaleY: -1}],
++  },
++  headerWrapper: {
++    flex: 1,
++  },
++  listStyle: {
++    flex: 1,
++  },
++  scrollToBottomStyle: {
++    opacity: 0.8,
++    position: 'absolute',
++    right: 10,
++    bottom: 30,
++    zIndex: 999,
++    height: 40,
++    width: 40,
++    borderRadius: 20,
++    backgroundColor: Color.backgroundTransparent,
++    alignItems: 'center',
++    justifyContent: 'center',
++    shadowColor: Color.black,
++    shadowOpacity: 0.5,
++    shadowOffset: {width: 0, height: 0},
++    shadowRadius: 1,
++  },
+ });
+-export default class MessageContainer extends React.PureComponent {
+-    constructor() {
+-        super(...arguments);
+-        this.state = {
+-            showScrollBottom: false,
+-            hasScrolled: false,
++export default class MessageContainer extends React.Component {
++  constructor() {
++    super(...arguments);
++    this._contentOffsetY = 0
++    this._contentSizeHeight = 0
++    this._onEndReached = true
++    this._onStartReached = true
++    this.isChatBottomList = React.createRef(false)
++    this.state = {
++      hasScrolled: false,
++    };
++    this.renderTypingIndicator = () => {
++      if (Platform.OS === 'web') {
++        return null;
++      }
++      return <TypingIndicator isTyping={this.props.isTyping || false}/>;
++    };
++    this.renderFooter = () => {
++      if (this.props.renderFooter) {
++        return this.props.renderFooter(this.props);
++      }
++      return this.renderTypingIndicator();
++    };
++    this.renderLoadEarlier = () => {
++      if (this.props.loadEarlier === true) {
++        const loadEarlierProps = {
++          ...this.props,
+         };
+-        this.renderTypingIndicator = () => {
+-            if (Platform.OS === 'web') {
+-                return null;
+-            }
+-            return <TypingIndicator isTyping={this.props.isTyping || false}/>;
+-        };
+-        this.renderFooter = () => {
+-            if (this.props.renderFooter) {
+-                return this.props.renderFooter(this.props);
+-            }
+-            return this.renderTypingIndicator();
+-        };
+-        this.renderLoadEarlier = () => {
+-            if (this.props.loadEarlier === true) {
+-                const loadEarlierProps = {
+-                    ...this.props,
+-                };
+-                if (this.props.renderLoadEarlier) {
+-                    return this.props.renderLoadEarlier(loadEarlierProps);
+-                }
+-                return <LoadEarlier {...loadEarlierProps}/>;
+-            }
+-            return null;
+-        };
+-        this.scrollToBottom = (animated = true) => {
+-            const { inverted } = this.props;
+-            if (inverted) {
+-                this.scrollTo({ offset: 0, animated });
+-            }
+-            else if (this.props.forwardRef && this.props.forwardRef.current) {
+-                this.props.forwardRef.current.scrollToEnd({ animated });
+-            }
+-        };
+-        this.handleOnScroll = (event) => {
+-            const { nativeEvent: { contentOffset: { y: contentOffsetY }, contentSize: { height: contentSizeHeight }, layoutMeasurement: { height: layoutMeasurementHeight }, }, } = event;
+-            const { scrollToBottomOffset } = this.props;
+-            if (this.props.inverted) {
+-                if (contentOffsetY > scrollToBottomOffset) {
+-                    this.setState({ showScrollBottom: true, hasScrolled: true });
+-                }
+-                else {
+-                    this.setState({ showScrollBottom: false, hasScrolled: true });
+-                }
+-            }
+-            else {
+-                if (contentOffsetY < scrollToBottomOffset &&
+-                    contentSizeHeight - layoutMeasurementHeight > scrollToBottomOffset) {
+-                    this.setState({ showScrollBottom: true, hasScrolled: true });
+-                }
+-                else {
+-                    this.setState({ showScrollBottom: false, hasScrolled: true });
+-                }
+-            }
+-        };
+-        this.renderRow = ({ item, index }) => {
+-            if (!item._id && item._id !== 0) {
+-                warning('GiftedChat: `_id` is missing for message', JSON.stringify(item));
+-            }
+-            if (!item.user) {
+-                if (!item.system) {
+-                    warning('GiftedChat: `user` is missing for message', JSON.stringify(item));
+-                }
+-                item.user = { _id: 0 };
+-            }
+-            const { messages, user, inverted, ...restProps } = this.props;
+-            if (messages && user) {
+-                const previousMessage = (inverted ? messages[index + 1] : messages[index - 1]) || {};
+-                const nextMessage = (inverted ? messages[index - 1] : messages[index + 1]) || {};
+-                const messageProps = {
+-                    ...restProps,
+-                    user,
+-                    key: item._id,
+-                    currentMessage: item,
+-                    previousMessage,
+-                    inverted,
+-                    nextMessage,
+-                    position: item.user._id === user._id ? 'right' : 'left',
+-                };
+-                if (this.props.renderMessage) {
+-                    return this.props.renderMessage(messageProps);
+-                }
+-                return <Message {...messageProps}/>;
+-            }
+-            return null;
++        if (this.props.renderLoadEarlier) {
++          return this.props.renderLoadEarlier(loadEarlierProps);
++        }
++        return <LoadEarlier {...loadEarlierProps}/>;
++      }
++      return null;
++    };
++    this.scrollToBottom = (animated = false) => {
++      const {inverted} = this.props;
++      if (inverted) {
++        this.scrollTo({offset: 0, animated});
++      } else if (this.props.forwardRef && this.props.forwardRef.current) {
++        this.props.loadEndMessages && this.props.loadEndMessages().then(() => {
++          this.props.forwardRef.current.scrollToEnd({animated})
++        });
++      }
++    };
++    this.handleOnScroll = (event) => {
++      const {addNewMessages} = this.state
++      const {
++        nativeEvent: {
++          contentOffset: {y: contentOffsetY},
++          contentSize: {height: contentSizeHeight},
++          layoutMeasurement: {height: layoutMeasurementHeight},
++        },
++      } = event;
++      const {scrollToBottomOffset, isScrollToBottom, setChatBottomList, onStartReachedThreshold} = this.props;
++      if (this.props.inverted) {
++        if (contentOffsetY > scrollToBottomOffset) {
++          // this.setState({hasScrolled: true});
++          this.props.setBottomOffset();
++        } else {
++          // this.setState({hasScrolled: true});
++        }
++      } else {
++        if (this._onEndReached && contentOffsetY < 500) {
++          this._onEndReached = false
++          this.props.onEndReached()
++        }
++        const paddingToBottom = 44;
++        if (layoutMeasurementHeight + contentOffsetY >= contentSizeHeight - paddingToBottom) {
++          if (!this.isChatBottomList.current) {
++            this.isChatBottomList.current = true
++            setChatBottomList(true)
++          }
++          // this.setState({isChatBottomList: true});
++          // if (countNewMessages > 0) {
++          //     this.props.loadNewMessages();
++          // }
++          // if (showScrollBottom && !isFetchNewMessages) {
++          //     this.setState({showScrollBottom: false});
++          // }
++        } else {
++          if (this.isChatBottomList.current) {
++            this.isChatBottomList.current = false
++            setChatBottomList(false)
++          }
++          if (contentOffsetY > this._contentOffsetY && contentSizeHeight === this._contentSizeHeight) {
++
++          } else {
++
++          }
++        }
++        if (this._onStartReached && layoutMeasurementHeight + contentOffsetY >= contentSizeHeight - paddingToBottom - onStartReachedThreshold) {
++          this._onStartReached = false
++          this.props.onStartReached()
++        }
++      }
++      this._contentOffsetY = contentOffsetY
++      this._contentSizeHeight = contentSizeHeight
++    };
++    this.renderRow = ({item, index}) => {
++      if (!item._id && item._id !== 0) {
++        warning('GiftedChat: `_id` is missing for message', JSON.stringify(item));
++      }
++      if (!item.user) {
++        if (!item.system) {
++          warning('GiftedChat: `user` is missing for message', JSON.stringify(item));
++        }
++        item.user = {_id: 0};
++      }
++      const {messages, user, inverted, ...restProps} = this.props;
++      if (messages && user) {
++        const previousMessage = (inverted ? messages[index + 1] : messages[index - 1]) || {};
++        const nextMessage = (inverted ? messages[index - 1] : messages[index + 1]) || {};
++        const messageProps = {
++          ...restProps,
++          user,
++          key: item._id,
++          currentMessage: item,
++          previousMessage,
++          inverted,
++          nextMessage,
++          position: item.user._id === user._id ? 'right' : 'left',
+         };
+-        this.renderChatEmpty = () => {
+-            if (this.props.renderChatEmpty) {
+-                return this.props.inverted ? (this.props.renderChatEmpty()) : (<View style={styles.emptyChatContainer}>
++        if (this.props.renderMessage) {
++          return this.props.renderMessage(messageProps);
++        }
++        return <Message {...messageProps}/>;
++      }
++      return null;
++    };
++    this.renderChatEmpty = () => {
++      if (this.props.renderChatEmpty) {
++        return this.props.inverted ? (this.props.renderChatEmpty()) : (<View style={styles.emptyChatContainer}>
+           {this.props.renderChatEmpty()}
+         </View>);
+-            }
+-            return <View style={styles.container}/>;
+-        };
+-        this.renderHeaderWrapper = () => (<View style={styles.headerWrapper}>{this.renderLoadEarlier()}</View>);
+-        this.onLayoutList = () => {
+-            if (!this.props.inverted &&
+-                !!this.props.messages &&
+-                this.props.messages.length) {
+-                setTimeout(() => this.scrollToBottom && this.scrollToBottom(false), 15 * this.props.messages.length);
+-            }
+-        };
+-        this.onEndReached = ({ distanceFromEnd }) => {
+-            const { loadEarlier, onLoadEarlier, infiniteScroll, isLoadingEarlier, } = this.props;
+-            if (infiniteScroll &&
+-                (this.state.hasScrolled || distanceFromEnd > 0) &&
+-                distanceFromEnd <= 100 &&
+-                loadEarlier &&
+-                onLoadEarlier &&
+-                !isLoadingEarlier &&
+-                Platform.OS !== 'web') {
+-                onLoadEarlier();
+-            }
+-        };
+-        this.keyExtractor = (item) => `${item._id}`;
+-    }
+-    scrollTo(options) {
+-        if (this.props.forwardRef && this.props.forwardRef.current && options) {
+-            this.props.forwardRef.current.scrollToOffset(options);
+-        }
+-    }
+-    renderScrollBottomComponent() {
+-        const { scrollToBottomComponent } = this.props;
+-        if (scrollToBottomComponent) {
+-            return scrollToBottomComponent();
+-        }
+-        return <Text>V</Text>;
++      }
++      return <View style={styles.container}/>;
++    };
++    this.renderHeaderWrapper = () => (<View style={styles.headerWrapper}>{this.renderLoadEarlier()}</View>);
++    this.onLayoutList = () => {
++      if (!this.props.inverted &&
++        !!this.props.messages &&
++        this.props.messages.length) {
++        setTimeout(() => this.scrollToBottom && this.scrollToBottom(false), 15 * this.props.messages.length);
++      }
++    };
++    this.onEndReached = ({distanceFromEnd}) => {
++      console.log('distanceFromEnd', distanceFromEnd)
++      const {loadEarlier, onLoadEarlier, infiniteScroll, isLoadingEarlier,} = this.props;
++      if (infiniteScroll &&
++        (this.state.hasScrolled || distanceFromEnd > 0) &&
++        distanceFromEnd <= 100 &&
++        loadEarlier &&
++        onLoadEarlier &&
++        !isLoadingEarlier) {
++        onLoadEarlier();
++      }
++    };
++    this.keyExtractor = (item) => `${item._id}`;
++    this.handleOnContentSizeChange = () => {
++      const {isScrollToBottom} = this.props
++console.log('this.props.messages', this.props.messages)
++      if (this.isChatBottomList.current && isScrollToBottom) {
++        this.props.forwardRef.current.scrollToEnd({animated: false});
++      }
++
++      this._onEndReached = true
++      this._onStartReached = true
+     }
+-    renderScrollToBottomWrapper() {
+-        const propsStyle = this.props.scrollToBottomStyle || {};
+-        return (<View style={[styles.scrollToBottomStyle, propsStyle]}>
+-        <TouchableOpacity onPress={() => this.scrollToBottom()} hitSlop={{ top: 5, left: 5, right: 5, bottom: 5 }}>
+-          {this.renderScrollBottomComponent()}
+-        </TouchableOpacity>
+-      </View>);
++  }
++
++  shouldComponentUpdate(nextProps, nextState, nextContext) {
++    const { messages, isScrollToBottom } = this.props
++
++    if (messages.length !== nextProps.messages.length) {
++      return true
+     }
+-    render() {
+-        const { inverted } = this.props;
+-        return (<View style={this.props.alignTop ? styles.containerAlignTop : styles.container}>
+-        <FlatList ref={this.props.forwardRef} extraData={[this.props.extraData, this.props.isTyping]} keyExtractor={this.keyExtractor} enableEmptySections automaticallyAdjustContentInsets={false} inverted={inverted} data={this.props.messages} style={styles.listStyle} contentContainerStyle={styles.contentContainerStyle} renderItem={this.renderRow} {...this.props.invertibleScrollViewProps} ListEmptyComponent={this.renderChatEmpty} ListFooterComponent={inverted ? this.renderHeaderWrapper : this.renderFooter} ListHeaderComponent={inverted ? this.renderFooter : this.renderHeaderWrapper} onScroll={this.handleOnScroll} scrollEventThrottle={100} onLayout={this.onLayoutList} onEndReached={this.onEndReached} onEndReachedThreshold={0.1} {...this.props.listViewProps}/>
+-        {this.state.showScrollBottom && this.props.scrollToBottom
+-                ? this.renderScrollToBottomWrapper()
+-                : null}
+-      </View>);
++
++    // if (isScrollToBottom !== nextProps.isScrollToBottom) {
++    //   return true
++    // }
++
++    return false
++  }
++
++  scrollTo(options) {
++    if (this.props.forwardRef && this.props.forwardRef.current && options) {
++      this.props.forwardRef.current.scrollToOffset(options);
+     }
++  }
++
++  // renderScrollBottomComponent() {
++  //     const {scrollToBottomComponent} = this.props;
++  //     if (scrollToBottomComponent) {
++  //         return scrollToBottomComponent();
++  //     }
++  //     return <Text>V</Text>;
++  // }
++  //
++  // renderScrollToBottomWrapper() {
++  //     const propsStyle = this.props.scrollToBottomStyle || {};
++  //     return (<View style={[styles.scrollToBottomStyle, propsStyle]}>
++  //         <TouchableOpacity onPress={() => this.scrollToBottom()} hitSlop={{top: 5, left: 5, right: 5, bottom: 5}}>
++  //             {this.renderScrollBottomComponent()}
++  //         </TouchableOpacity>
++  //     </View>);
++  // }
++
++  render() {
++    console.log('render ScrollView')
++    return (<View style={this.props.alignTop ? styles.containerAlignTop : styles.container}>
++      {/*{(this.props.showScrollBottom || this.state.showScrollBottom) && this.props.scrollToBottom*/}
++      {/*  ? this.renderScrollToBottomWrapper()*/}
++      {/*  : null}*/}
++      {/*<FlatList*/}
++      {/*          ref={this.props.forwardRef}*/}
++      {/*          extraData={[this.props.extraData, this.props.isTyping]}*/}
++      {/*          keyExtractor={this.keyExtractor}*/}
++      {/*          enableEmptySections*/}
++      {/*          automaticallyAdjustContentInsets={false}*/}
++      {/*          inverted={inverted}*/}
++      {/*          data={this.props.messages}*/}
++      {/*          style={styles.listStyle}*/}
++      {/*          contentContainerStyle={styles.contentContainerStyle}*/}
++      {/*          renderItem={this.renderRow}*/}
++      {/*          {...this.props.invertibleScrollViewProps}*/}
++      {/*          ListEmptyComponent={this.renderChatEmpty}*/}
++      {/*          ListFooterComponent={inverted ? this.renderHeaderWrapper : this.renderFooter}*/}
++      {/*          ListHeaderComponent={inverted ? this.renderFooter : this.renderHeaderWrapper}*/}
++      {/*          onScroll={this.handleOnScroll}*/}
++      {/*          scrollEventThrottle={100}*/}
++      {/*          onLayout={this.onLayoutList}*/}
++      {/*          onEndReached={this.onEndReached}*/}
++      {/*          onEndReachedThreshold={0.1}*/}
++      {/*          {...this.props.listViewProps}*/}
++      {/*/>*/}
++      <ScrollView
++        ref={this.props.forwardRef}
++        onScroll={this.handleOnScroll}
++        scrollEventThrottle={16}
++        removeClippedSubviews={true}
++        onContentSizeChange={this.handleOnContentSizeChange}
++        maintainVisibleContentPosition={{
++          minIndexForVisible: 0,
++        }}
++        {...this.props.invertibleScrollViewProps}
++      >
++
++        {this.props.messages.map((message, index) => {
++          return this.renderRow({item: message, index: index})
++        })}
++        <View style={{height: 50}}/>
++      </ScrollView>
++    </View>);
++  }
+ }
+ MessageContainer.defaultProps = {
+-    messages: [],
+-    user: {},
+-    isTyping: false,
+-    renderChatEmpty: null,
+-    renderFooter: null,
+-    renderMessage: null,
+-    onLoadEarlier: () => { },
+-    onQuickReply: () => { },
+-    inverted: true,
+-    loadEarlier: false,
+-    listViewProps: {},
+-    invertibleScrollViewProps: {},
+-    extraData: null,
+-    scrollToBottom: false,
+-    scrollToBottomOffset: 200,
+-    alignTop: false,
+-    scrollToBottomStyle: {},
+-    infiniteScroll: false,
+-    isLoadingEarlier: false,
++  messages: [],
++  user: {},
++  isTyping: false,
++  renderChatEmpty: null,
++  renderFooter: null,
++  renderMessage: null,
++  onLoadEarlier: () => {
++  },
++  onQuickReply: () => {
++  },
++  inverted: true,
++  loadEarlier: false,
++  listViewProps: {},
++  invertibleScrollViewProps: {},
++  extraData: null,
++  scrollToBottom: false,
++  scrollToBottomOffset: 200,
++  alignTop: false,
++  scrollToBottomStyle: {},
++  infiniteScroll: false,
++  isLoadingEarlier: false,
+ };
+ MessageContainer.propTypes = {
+-    messages: PropTypes.arrayOf(PropTypes.object),
+-    isTyping: PropTypes.bool,
+-    user: PropTypes.object,
+-    renderChatEmpty: PropTypes.func,
+-    renderFooter: PropTypes.func,
+-    renderMessage: PropTypes.func,
+-    renderLoadEarlier: PropTypes.func,
+-    onLoadEarlier: PropTypes.func,
+-    listViewProps: PropTypes.object,
+-    inverted: PropTypes.bool,
+-    loadEarlier: PropTypes.bool,
+-    invertibleScrollViewProps: PropTypes.object,
+-    extraData: PropTypes.object,
+-    scrollToBottom: PropTypes.bool,
+-    scrollToBottomOffset: PropTypes.number,
+-    scrollToBottomComponent: PropTypes.func,
+-    alignTop: PropTypes.bool,
+-    scrollToBottomStyle: StylePropType,
+-    infiniteScroll: PropTypes.bool,
++  messages: PropTypes.arrayOf(PropTypes.object),
++  isTyping: PropTypes.bool,
++  user: PropTypes.object,
++  renderChatEmpty: PropTypes.func,
++  renderFooter: PropTypes.func,
++  renderMessage: PropTypes.func,
++  renderLoadEarlier: PropTypes.func,
++  onLoadEarlier: PropTypes.func,
++  listViewProps: PropTypes.object,
++  inverted: PropTypes.bool,
++  loadEarlier: PropTypes.bool,
++  invertibleScrollViewProps: PropTypes.object,
++  extraData: PropTypes.object,
++  scrollToBottom: PropTypes.bool,
++  scrollToBottomOffset: PropTypes.number,
++  scrollToBottomComponent: PropTypes.func,
++  alignTop: PropTypes.bool,
++  scrollToBottomStyle: StylePropType,
++  infiniteScroll: PropTypes.bool,
+ };
+ //# sourceMappingURL=MessageContainer.js.map
+\ No newline at end of file
+diff --git a/node_modules/react-native-gifted-chat/lib/MessageImage.js b/node_modules/react-native-gifted-chat/lib/MessageImage.js
+index 9c39b70..8fef80b 100644
+--- a/node_modules/react-native-gifted-chat/lib/MessageImage.js
++++ b/node_modules/react-native-gifted-chat/lib/MessageImage.js
+@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
+ import React from 'react';
+ import { Image, StyleSheet, View, } from 'react-native';
+ // TODO: support web
+-import Lightbox from 'react-native-lightbox-v2';
++// import Lightbox from 'react-native-lightbox-v2';
+ import { StylePropType } from './utils';
+ const styles = StyleSheet.create({
+     container: {},
+@@ -22,13 +22,14 @@ export function MessageImage({ containerStyle, lightboxProps = {}, imageProps =
+     if (currentMessage == null) {
+         return null;
+     }
+-    return (<View style={[styles.container, containerStyle]}>
+-      <Lightbox activeProps={{
+-            style: styles.imageActive,
+-        }} {...lightboxProps}>
+-        <Image {...imageProps} style={[styles.image, imageStyle]} source={{ uri: currentMessage.image }}/>
+-      </Lightbox>
+-    </View>);
++    // return (<View style={[styles.container, containerStyle]}>
++    //   <Lightbox activeProps={{
++    //         style: styles.imageActive,
++    //     }} {...lightboxProps}>
++    //     <Image {...imageProps} style={[styles.image, imageStyle]} source={{ uri: currentMessage.image }}/>
++    //   </Lightbox>
++    // </View>);
++    return null;
+ }
+ MessageImage.propTypes = {
+     currentMessage: PropTypes.object,

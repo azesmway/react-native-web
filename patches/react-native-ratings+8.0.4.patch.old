@@ -1,0 +1,62 @@
+diff --git a/node_modules/react-native-ratings/dist/SwipeRating.js b/node_modules/react-native-ratings/dist/SwipeRating.js
+index 5fc736d..b17fcb4 100644
+--- a/node_modules/react-native-ratings/dist/SwipeRating.js
++++ b/node_modules/react-native-ratings/dist/SwipeRating.js
+@@ -234,11 +234,12 @@ export default class SwipeRating extends Component {
+         const color = ratingTextColor || TYPES[type].color;
+         return (<View style={styles.showRatingView}>
+         <View style={styles.ratingView}>
+-          <Text style={[styles.ratingText, { color }]}>Rating: </Text>
++          {/*<Text style={[styles.ratingText, { color }]}>Rating: </Text>*/}
+           <Text style={[styles.currentRatingText, { color }]}>
+-            {this.getCurrentRating(this.state.value)}
++            {/*{this.getCurrentRating(this.state.value)}*/}
++            {Number.isInteger(this.getCurrentRating(this.state.value)) ? this.getCurrentRating(this.state.value) + '.00' : this.getCurrentRating(this.state.value)}
+           </Text>
+-          <Text style={[styles.maxRatingText, { color }]}>/{ratingCount}</Text>
++          {/*<Text style={[styles.maxRatingText, { color }]}>/{ratingCount}</Text>*/}
+         </View>
+         <View>
+           {readonly && showReadOnlyText &&
+@@ -292,7 +293,9 @@ const styles = StyleSheet.create({
+     starsWrapper: {
+         flexDirection: "row",
+         justifyContent: "center",
+-        alignItems: "center"
++        alignItems: "center",
++        borderWidth: 1,
++        borderColor: '#f1c40f'
+     },
+     starsInsideWrapper: {
+         position: "absolute",
+diff --git a/node_modules/react-native-ratings/src/SwipeRating.tsx b/node_modules/react-native-ratings/src/SwipeRating.tsx
+index b40d540..616a3ad 100644
+--- a/node_modules/react-native-ratings/src/SwipeRating.tsx
++++ b/node_modules/react-native-ratings/src/SwipeRating.tsx
+@@ -455,11 +455,12 @@ export default class SwipeRating extends Component<
+     return (
+       <View style={styles.showRatingView}>
+         <View style={styles.ratingView}>
+-          <Text style={[styles.ratingText, { color }]}>Rating: </Text>
++          {/*<Text style={[styles.ratingText, { color }]}>Rating: </Text>*/}
+           <Text style={[styles.currentRatingText, { color }]}>
+-            {this.getCurrentRating( this.state.value )}
++            {/*{this.getCurrentRating( this.state.value )}*/}
++            {Number.isInteger(this.getCurrentRating(this.state.value)) ? this.getCurrentRating(this.state.value) + '.00' : this.getCurrentRating(this.state.value)}
+           </Text>
+-          <Text style={[styles.maxRatingText, { color }]}>/{ratingCount}</Text>
++          {/*<Text style={[styles.maxRatingText, { color }]}>/{ratingCount}</Text>*/}
+         </View>
+         <View>
+           {readonly && showReadOnlyText &&
+@@ -525,7 +526,9 @@ const styles = StyleSheet.create( {
+   starsWrapper: {
+     flexDirection: "row",
+     justifyContent: "center",
+-    alignItems: "center"
++    alignItems: "center",
++    borderWidth: 1,
++    borderColor: '#f1c40f'
+   },
+   starsInsideWrapper: {
+     position: "absolute",

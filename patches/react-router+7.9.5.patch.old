@@ -1,0 +1,26 @@
+diff --git a/node_modules/react-router/dist/development/chunk-UIGDSWPH.mjs b/node_modules/react-router/dist/development/chunk-UIGDSWPH.mjs
+index b15e664..e68ff97 100644
+--- a/node_modules/react-router/dist/development/chunk-UIGDSWPH.mjs
++++ b/node_modules/react-router/dist/development/chunk-UIGDSWPH.mjs
+@@ -7993,7 +7993,7 @@ async function loadRouteModule(route, routeModulesCache) {
+     );
+     console.error(error);
+     if (window.__reactRouterContext && window.__reactRouterContext.isSpaMode && // @ts-expect-error
+-    import.meta.hot) {
++    void 0) {
+       throw error;
+     }
+     window.location.reload();
+diff --git a/node_modules/react-router/dist/production/chunk-RZ6LZWMW.mjs b/node_modules/react-router/dist/production/chunk-RZ6LZWMW.mjs
+index dd97846..a42bf9c 100644
+--- a/node_modules/react-router/dist/production/chunk-RZ6LZWMW.mjs
++++ b/node_modules/react-router/dist/production/chunk-RZ6LZWMW.mjs
+@@ -7993,7 +7993,7 @@ async function loadRouteModule(route, routeModulesCache) {
+     );
+     console.error(error);
+     if (window.__reactRouterContext && window.__reactRouterContext.isSpaMode && // @ts-expect-error
+-    import.meta.hot) {
++    void 0) {
+       throw error;
+     }
+     window.location.reload();
