@@ -56,7 +56,7 @@ function ImageView({ utils, imagesView, setImagesView }) {
 
   if (img360 && IS_WEB) {
     return (
-      <Suspense>
+      <Suspense fallback={null}>
         <DialogBox title={title} isOpenDialog={modalIsOpen} handleCloseDialog={handleClose} dialogWidth="98%" dialogHeight="98vh" disableTitle>
           <ReactPhotoSphereViewer src={images[0]?.src ?? images} height="100vh" width="100%" />
         </DialogBox>

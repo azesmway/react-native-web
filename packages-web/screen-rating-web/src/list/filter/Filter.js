@@ -344,7 +344,7 @@ class Filter extends PureComponent {
             {hotels.length > 0 ? (
               hotels.map((item, index) => {
                 return (
-                  <Suspense>
+                  <Suspense fallback={null}>
                     <ItemList key={index.toString()} item={item} changeHotelsInMyRating={this.changeHotelsInMyRating} myHotelsList={[]} utils={this.props.utils} />
                   </Suspense>
                 )

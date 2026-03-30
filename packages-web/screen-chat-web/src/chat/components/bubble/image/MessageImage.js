@@ -474,7 +474,7 @@ class MessageImage extends PureComponent {
       if (arrayPicExt.indexOf(extPicture) !== -1) {
         return (
           <View style={{ alignItems: 'center', alignContent: 'center', paddingRight: 5, paddingLeft: 5 }}>
-            <Suspense>
+            <Suspense fallback={null}>
               <PhotoGrid source={currentMessage.image_min} onPressImage={this.showImage} width={w} height={img360 ? 150 : w / aspectRatio + 60} img360={img360} utils={this.props.utils} />
             </Suspense>
             {modalVisible && img360 ? this.view360Image(currentMessage.image[0]) : this.viewImage(currentMessage.image)}

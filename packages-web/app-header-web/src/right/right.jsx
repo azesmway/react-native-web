@@ -2,7 +2,7 @@ import compact from 'lodash/compact'
 import isEmpty from 'lodash/isEmpty'
 import split from 'lodash/split'
 import { createRef, lazy, PureComponent, Suspense, useRef } from 'react'
-import { Button, Linking, Modal, Platform, Text, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Linking, Modal, Platform, Text, TouchableOpacity, View } from 'react-native'
 
 const ActionsFilter = lazy(() => import('./components/ActionsFilter'))
 const FabMenu = lazy(() => import('./components/FabMenu'))
@@ -456,7 +456,7 @@ class RightComponent extends PureComponent {
                   icon={params.notifyEnabled ? 'notifications' : 'notifications-off'}
                   text={params.notifyEnabled ? 'Выключить уведомления' : 'Включить уведомления'}
                 />
-                <Suspense>
+                <Suspense fallback={null}>
                   <FabMenu
                     country={Number(filter.selectedCountry)}
                     hotel={Number(filter.selectedHotel)}
@@ -577,13 +577,13 @@ class RightComponent extends PureComponent {
   }
 
   renderExit = history => {
-    const { Icon, CircularProgress, isMobile } = this.props.utils
+    const { Icon, isMobile } = this.props.utils
     const { loadingExit } = this.state
 
     if (loadingExit) {
       return (
         <View>
-          <CircularProgress size={isMobile ? 25 : 35} />
+          <ActivityIndicator size={isMobile ? 25 : 35} />
         </View>
       )
     } else {
@@ -763,7 +763,7 @@ class RightComponent extends PureComponent {
                 />
               </SvgIcon>
             </TouchableOpacity>
-            <Suspense>
+            <Suspense fallback={null}>
               <ShareRating params={params} setModalAlert={setModalAlert} utils={this.props.utils} />
             </Suspense>
           </>
@@ -783,10 +783,10 @@ class RightComponent extends PureComponent {
       } else if (params.screen === 'list_hotels') {
         return (
           <View style={{ flexDirection: 'row' }}>
-            <Suspense>
+            <Suspense fallback={null}>
               <ShareRating params={params} setModalAlert={setModalAlert} utils={this.props.utils} />
             </Suspense>
-            <Suspense>
+            <Suspense fallback={null}>
               <RatingsListCounties params={params} utils={this.props.utils} />
             </Suspense>
           </View>
@@ -813,18 +813,18 @@ class RightComponent extends PureComponent {
         )
       } else if (params.screen === 'my-rating') {
         return (
-          <Suspense>
+          <Suspense fallback={null}>
             <MyRating params={params} utils={this.props.utils} />
           </Suspense>
         )
       } else if (params.screen === 'actions_hotels') {
         return (
           <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-            <Suspense>
+            <Suspense fallback={null}>
               <ShowSearch params={params} utils={this.props.utils} />
             </Suspense>
             {!params.openSearch ? (
-              <Suspense>
+              <Suspense fallback={null}>
                 <ActionsFilter params={params} utils={this.props.utils} />
               </Suspense>
             ) : null}
@@ -833,7 +833,7 @@ class RightComponent extends PureComponent {
       } else if (params.screen === 'actions_hotel') {
         return (
           <View style={{ justifyContent: 'center' }}>
-            <Suspense>
+            <Suspense fallback={null}>
               <ActionsFilter params={params} utils={this.props.utils} />
             </Suspense>
           </View>
@@ -864,7 +864,7 @@ class RightComponent extends PureComponent {
                 <Icon name={'note-add'} size={35} color={color} />
               </TouchableOpacity>
             ) : null}
-            <Suspense>
+            <Suspense fallback={null}>
               <ActionsFilter params={params} utils={this.props.utils} />
             </Suspense>
           </View>
@@ -949,12 +949,12 @@ class RightComponent extends PureComponent {
 
     return (
       <>
-        <View style={{ flexDirection: 'row' }}>
+        <View style={{ flexDirection: 'row', marginRight: 5 }}>
           {this.renderButton(history, params, filter.selectedFav)}
           {open && this.renderSearch()}
         </View>
         {visible && (
-          <Suspense>
+          <Suspense fallback={null}>
             <AddNewTheme visible={visible} setVisible={this.setVisibleCreateTheme} user={user} />
           </Suspense>
         )}

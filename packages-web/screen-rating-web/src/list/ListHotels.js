@@ -241,7 +241,7 @@ class ListHotels extends PureComponent {
               height: Dimensions.get('window').height,
               marginTop: 140
             }}>
-            <Suspense>
+            <Suspense fallback={null}>
               <Filter
                 visible={visibleModal}
                 closeModalFilter={this.closeModalFilter}
@@ -315,7 +315,7 @@ class ListHotels extends PureComponent {
               alignSelf: 'center',
               height: Dimensions.get('window').height / 2
             }}>
-            <Suspense>
+            <Suspense fallback={null}>
               <Search
                 setVisibleModalSearch={this.setVisibleModalSearch}
                 country={countryId}
@@ -766,7 +766,7 @@ class ListHotels extends PureComponent {
             })}
           </ScrollableTabView>
         </View>
-        <Suspense>
+        <Suspense fallback={null}>
           <List
             {...this.props}
             pattern={hotel}

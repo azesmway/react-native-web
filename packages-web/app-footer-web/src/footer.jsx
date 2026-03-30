@@ -12,7 +12,7 @@ const StatusBar = props => {
   if (footerBar.type && footerBar.type === 'curved') {
     return (
       <View style={{ width: '100%', position: 'absolute', bottom: 0, backgroundColor: '#fff', height: getSafeAreaInsets().bottom, alignSelf: 'center' }}>
-        <Suspense>
+        <Suspense fallback={null}>
           <Curved footerBar={footerBar} />
         </Suspense>
       </View>

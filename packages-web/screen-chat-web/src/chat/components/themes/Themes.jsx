@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useState, Suspense } from 'react'
 import { Appearance, Dimensions, Platform, View } from 'react-native'
 
 import SelectTheme from './SelectTheme'
+import AddNewTheme from 'app-header-web/src/right/components/newtheme'
 
 const GLOBAL_OBJ = Platform.OS === 'web' ? window : global
 const { setStartAppChat } = GLOBAL_OBJ.onlinetur.storage
@@ -10,6 +11,13 @@ const { width, height } = Dimensions.get('window')
 const Themes = props => {
   const { utils, user, filter, currentCategory, setModalTheme, modalTheme, setChatTheme, chatTheme } = props
   const { Modal, Portal, theme, isMobile } = utils
+  const [open, setOpen] = useState(false);
+  const [item, setItem] = useState(null);
+
+  const setVisible = (o, itm) => {
+    setItem(itm)
+    setOpen(o)
+  }
 
   const escFunction = event => {
     if (event.keyCode === 27) {
@@ -78,6 +86,7 @@ const Themes = props => {
   }
 
   return (
+    <>
     <Portal>
       <Modal visible={modalTheme} onDismiss={() => closeModal()} contentContainerStyle={contentContainerStyle}>
         <View style={modalStyle}>
@@ -91,10 +100,17 @@ const Themes = props => {
             currentCategory={currentCategory}
             user={user}
             filter={filter}
+            setVisible={setVisible}
           />
         </View>
       </Modal>
     </Portal>
+      {open && (
+        <Suspense fallback={null}>
+          <AddNewTheme visible={open} setVisible={setOpen} user={user} item={item} />
+        </Suspense>
+      )}
+      </>
   )
 }
 

@@ -81,13 +81,13 @@ export const InputToolbarView = memo(
             </TouchableOpacity>
             <View
               style={{
-                flex: 1,
                 alignItems: 'flex-start',
                 justifyContent: 'center',
-                padding: 10,
+                padding: 5,
                 backgroundColor: '#fff',
                 borderRadius: 20,
-                marginRight: isMobile ? 5 : 10
+                marginRight: 10,
+                width: '92%'
               }}>
               <TextInput
                 ref={refInput}
@@ -98,7 +98,8 @@ export const InputToolbarView = memo(
                 autoCapitalize={'none'}
                 autoCorrect={false}
                 value={textMessage}
-                style={{ width: '92%', color: '#000', fontSize: 14, lineHeight: 14, bottom: 2 }}
+                // style={{ width: '92%', color: '#000', fontSize: 14, lineHeight: 14 }}
+                style={[inputDynamicStyle, { width: '90%' }]}
               />
               {textMessage !== '' && (
                 <View style={{ position: 'absolute', right: 10, bottom: 0 }}>
@@ -175,7 +176,6 @@ export const InputToolbarView = memo(
               style={[attachButtonDynamicStyle, { width: isMobile ? 30 : 40 }]}>
               <SendIcon textMessage={textMessage} imagesLength={imagesLength} images360={images360} isSendMessage={isSendMessage} utils={utils} />
             </SendMessageChat>
-            {/*</View>*/}
           </View>
         </View>
 

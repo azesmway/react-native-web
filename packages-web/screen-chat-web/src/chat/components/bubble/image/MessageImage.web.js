@@ -68,7 +68,7 @@ class MessageImage extends PureComponent {
             const { width } = event.nativeEvent.layout
             this.setState({ viewWidth: width })
           }}>
-          <Suspense>
+          <Suspense fallback={null}>
             <PhotoGrid
               currentMessage={currentMessage}
               source={currentMessage.image_min}

@@ -9,7 +9,7 @@ const StatusBar = props => {
   if (statusBar.type && statusBar.type === 'radio') {
     return (
       <View style={{ width: '100%', height: 50, alignItems: 'center' }}>
-        <Suspense>
+        <Suspense fallback={null}>
           <Radio />
         </Suspense>
       </View>

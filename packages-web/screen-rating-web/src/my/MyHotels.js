@@ -186,7 +186,7 @@ class MyHotels extends Component {
               alignSelf: 'center',
               height: Dimensions.get('window').height - 200
             }}>
-            <Suspense>
+            <Suspense fallback={null}>
               <Filter
                 countries={countries}
                 changeRatingFilter={changeRatingFilter}
@@ -288,7 +288,7 @@ class MyHotels extends Component {
             })}
           </ScrollableTabView>
         </View>
-        <Suspense>
+        <Suspense fallback={null}>
           <ListMy
             hotels={data}
             removeFromMyRating={this.removeFromMyRating}

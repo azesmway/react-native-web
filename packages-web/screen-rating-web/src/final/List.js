@@ -67,7 +67,7 @@ const FinalList = ({
 
     if (item.huid) {
       return (
-        <Suspense>
+        <Suspense fallback={null}>
           <Item
             key={item.huid.toString()}
             item={item}

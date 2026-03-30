@@ -19,7 +19,6 @@ firebase.initializeApp({
 // eslint-disable-next-line no-undef
 const messaging = firebase.messaging()
 
-const URL_MAIN = 'https://www.onlinetur.ru'
 const URL_CHAT = 'https://web.onlinetur.ru'
 
 // messaging.onBackgroundMessage((payload) => {
@@ -38,10 +37,10 @@ const URL_CHAT = 'https://web.onlinetur.ru'
 // })
 
 // eslint-disable-next-line no-undef
-self.addEventListener('notificationclose', (event) => {})
+self.addEventListener('notificationclose', event => {})
 
 // eslint-disable-next-line no-undef
-self.addEventListener('notificationclick', (event) => {
+self.addEventListener('notificationclick', event => {
   const urlNew = '/m/' + event.notification.data.id_chat
   event.notification.close()
 
@@ -75,5 +74,19 @@ self.addEventListener('notificationclick', (event) => {
         openurl: urlNew
       })
     })()
+  )
+})
+
+// eslint-disable-next-line no-undef
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    fetch(event.request, {
+      cache: 'no-store',
+      headers: {
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        Pragma: 'no-cache',
+        Expires: '0'
+      }
+    })
   )
 })

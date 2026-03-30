@@ -119,7 +119,7 @@ class PhotoGrid extends PureComponent {
         <View style={[styleImg, { flexDirection: direction === 'row' ? 'column' : 'row' }]}>
           {firstViewImages.map((image, index) => (
             <TouchableOpacity activeOpacity={0.7} key={index} style={{ flex: 1 }} onPress={event => this.handlePressImage(event, { image, img360, index, type: 'first' })}>
-              <Suspense>
+              <Suspense fallback={null}>
                 <ImageLoad
                   resizeMode={null}
                   style={[styles.image, { width: firstImageWidth, height: firstImageHeight, borderWidth: 1 }, this.props.imageStyle]}
@@ -142,7 +142,7 @@ class PhotoGrid extends PureComponent {
                     </View>
                   </ImageBackground>
                 ) : (
-                  <Suspense>
+                  <Suspense fallback={null}>
                     <ImageLoad
                       style={[styles.image, { width: secondImageWidth, height: secondImageHeight }, this.props.imageStyle]}
                       source={typeof image === 'string' ? { uri: image } : image}

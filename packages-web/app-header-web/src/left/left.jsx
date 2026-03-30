@@ -44,7 +44,7 @@ const LeftHeader = props => {
 
   const renderDrawer = useMemo(
     () => (
-      <TouchableOpacity style={{ marginLeft: isMobile ? -5 : LEFT_DRAWER, justifyContent: 'center' }} onPress={() => setDrawer(!openDrawer)}>
+      <TouchableOpacity style={{ marginLeft: isMobile ? 5 : LEFT_DRAWER, justifyContent: 'center' }} onPress={() => setDrawer(!openDrawer)}>
         <Svg width={isMobile ? 26 : 32} height={isMobile ? 26 : 32} viewBox="0 0 24 24" fill="none">
           <Path
             fillRule="evenodd"

@@ -276,7 +276,7 @@ class FabMenu extends PureComponent {
         {/*  </TouchableOpacity>*/}
         {/*) : null}*/}
         {openModal && (
-          <Suspense>
+          <Suspense fallback={null}>
             <DialogBox title={dialog.label} isOpenDialog={openModal} handleCloseDialog={this.handleCloseDialog} dialogWidth={'90%'} dialogHeight={'80vh'} utils={this.props.utils}>
               <iframe src={url} allowFullScreen={true} width={'100%'} height={'100%'} frameBorder={'0'} />
             </DialogBox>

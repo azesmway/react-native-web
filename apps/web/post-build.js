@@ -4,6 +4,9 @@ const path = require('path')
 const arrayDirs = ['dist', 'dist/s', 'dist/l', 'dist/r', 'dist/r', 'dist/n', 'dist/y', 'dist/y', 'dist/g', 'dist/a', 'dist/a']
 const arrayHtml = ['index.html', 'index.html', 'index.html', 'index.html', '[rId].html', '[nId].html', 'index.html', '[yId].html', 'index.html', 'index.html', '[aId].html']
 
+const buildDate = new Date().getTime().toString()
+const BUILD_VERSION = '' + new Date().getDate() + '.' + new Date().getMonth() + '.' + new Date().getFullYear()
+
 for (let i = 0; i < arrayDirs.length; i++) {
   // 1. Путь к index.html
   const htmlPath = path.join(__dirname, arrayDirs[i], arrayHtml[i])
@@ -171,14 +174,28 @@ for (let i = 0; i < arrayDirs.length; i++) {
       '  </script></body>'
 
     const customCode3 = `<title data-rh="true"><?php echo $title; ?></title>
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
     <meta property="og:title" content="<?php echo $title; ?>"/>
     <meta property="og:description" content="<?php echo $description; ?>"/>
     <meta property="og:image" content="<?php echo $image; ?>"/>
     <meta property="og:locale" content="ru_RU" />
     <meta name="description" content="<?php echo $description; ?>"/>
+    
+    <!-- МАКСИМАЛЬНАЯ ЗАЩИТА ОТ КЕШИРОВАНИЯ ДЛЯ IOS -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, private, max-age=0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
+    <!-- Дополнительные мета-теги для iOS Safari -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <!-- Запрещаем кеширование через HTML-атрибуты -->
+    <meta name="format-detection" content="telephone=no">
+    <meta name="Cache-Control" content="no-cache">
+
+    <!-- Уникальная версия для принудительной перезагрузки -->
+    <meta name="build-version" content="${BUILD_VERSION}">
+    <meta name="build-timestamp" content="${buildDate}">
 `
 
     const modifiedHtml = html.replace('<!DOCTYPE html>', `${customCode1}<!DOCTYPE html>`).replace('</body>', `${customCode2}</body>`).replace('<title data-rh="true"></title>', customCode3)

@@ -229,7 +229,7 @@ const ScrollBottom = memo(props => {
               </View>
             </View>
           ) : (
-            <Icon name="keyboard-arrow-down" color={isMobile ? MAIN_COLOR : '#fff'} size={30} />
+            <Icon name="keyboard-arrow-down" color={'#fff'} size={30} />
           )}
         </View>
       </TouchableOpacity>

@@ -1,3 +1,3 @@
-import * as mobile from './mobile'
+import * as mobile from './mobile.js'
 
 export { mobile }

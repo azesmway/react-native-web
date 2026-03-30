@@ -72,7 +72,7 @@ class List extends PureComponent {
       })
 
       return (
-        <Suspense>
+        <Suspense fallback={null}>
           <Item
             item={item}
             setHotels={setHotels}

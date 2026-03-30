@@ -51,7 +51,7 @@ class ListMy extends PureComponent {
           <ScrollView contentContainerStyle={{ flex: 1, width: isMobile ? width : width / 2, backgroundColor: 'rgba(255,255,255,0.5)', alignSelf: 'center' }}>
             {hotels.map((item, index) => {
               return (
-                <Suspense>
+                <Suspense fallback={null}>
                   <ItemMy
                     key={index.toString()}
                     item={item}
