@@ -1,16 +1,10 @@
-import 'react-native-gesture-handler'
-
 import { ThemeProvider } from '@react-navigation/native'
 import Constants from 'expo-constants'
 import { manufacturer, modelName, osVersion } from 'expo-device'
 import { useFonts } from 'expo-font'
 import { SplashScreen, Stack } from 'expo-router'
-import { StatusBar } from 'expo-status-bar'
 import React, { lazy, Suspense, useEffect, useState } from 'react'
-import { Platform, useColorScheme } from 'react-native'
-import { EdgeInsets, useSafeAreaInsets } from 'react-native-safe-area-context'
-
-const GLOBAL_OBJ = Platform.OS === 'web' ? window : global
+import { useColorScheme } from 'react-native'
 
 // Lazy loaded components
 const TopScreenComponent = lazy(() => import('app-top-web'))
@@ -54,10 +48,10 @@ const initializeDeviceInfo = () => ({
 })
 
 // Window setup helper
-const setupWindowObject = async (safeAreaInsets: EdgeInsets) => {
+const setupWindowObject = async () => {
   const appcore = await import('app-core-web')
 
-  Object.assign(GLOBAL_OBJ, {
+  Object.assign(window, {
     onlinetur: {
       storage: appcore.storage,
       constants: appcore.constants,
@@ -72,9 +66,7 @@ const setupWindowObject = async (safeAreaInsets: EdgeInsets) => {
     }
   })
 
-  const { setAppConfig, setSafeAreaInsets } = (GLOBAL_OBJ as any).onlinetur.storage
-
-  setSafeAreaInsets(safeAreaInsets)
+  const { setAppConfig } = (window as any).onlinetur.storage
   // @ts-ignore
   setAppConfig(Constants.expoConfig?.onlinetur)
 }
@@ -82,7 +74,7 @@ const setupWindowObject = async (safeAreaInsets: EdgeInsets) => {
 export default function RootLayout() {
   const colorScheme = useColorScheme()
   const [isLoading, setLoading] = useState(false)
-  const safeAreaInsets = useSafeAreaInsets()
+  const [open, setOpen] = useState(true)
 
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf')
@@ -97,7 +89,7 @@ export default function RootLayout() {
 
   // Initialize app data
   useEffect(() => {
-    setupWindowObject(safeAreaInsets).then(() => {
+    setupWindowObject().then(() => {
       setLoading(true)
     })
   }, [])
@@ -106,12 +98,11 @@ export default function RootLayout() {
     return null
   }
 
-  const { theme } = (GLOBAL_OBJ as any).onlinetur
+  const { theme } = (window as any).onlinetur
 
   return (
     <TopScreenComponentLoad>
       <AppRootComponentLoad children={undefined} />
-      <StatusBar style={colorScheme === 'light' ? 'dark' : 'light'} />
       <ThemeProvider value={colorScheme === 'light' ? theme.light : theme.dark}>
         <AppDrawerComponentLoad>
           <Stack
