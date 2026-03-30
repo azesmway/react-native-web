@@ -1,30 +1,10 @@
 import { lazy, Suspense } from 'react'
-
 const ActionsHotelScreen = lazy(() => import('screen-ah-web'))
 
-const AppHeader = lazy(() => import('app-header-web'))
-const StatusBar = lazy(() => import('app-statusbar-web'))
-const Modals = lazy(() => import('app-ui-web'))
-const Footer = lazy(() => import('app-footer-web'))
-
-export default function Index(props: any) {
+export default function Index() {
   return (
-    <>
-      <Suspense>
-        <AppHeader />
-      </Suspense>
-      <Suspense>
-        <StatusBar />
-      </Suspense>
-      <Suspense>
-        <ActionsHotelScreen />
-      </Suspense>
-      <Suspense>
-        <Footer />
-      </Suspense>
-      <Suspense>
-        <Modals />
-      </Suspense>
-    </>
+    <Suspense fallback={null}>
+      <ActionsHotelScreen />
+    </Suspense>
   )
 }
