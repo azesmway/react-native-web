@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "license": "MIT",
   "private": true,
-  "main": "src/store.ts",
+  "main": "src/store/store.ts",
   "scripts": {
     "build": "vite build"
   },

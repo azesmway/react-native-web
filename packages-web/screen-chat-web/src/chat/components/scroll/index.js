@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { Dimensions, Platform } from 'react-native'
 import { connect } from 'react-redux'
 
 import ScrollBottom from './ScrollBottom'
-import { Dimensions, Platform } from 'react-native'
 
 export default function ScrollBottomComponent(props) {
   const [isLoading, setLoading] = useState(true)

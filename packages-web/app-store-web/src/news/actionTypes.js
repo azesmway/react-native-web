@@ -1,7 +1,0 @@
-export const NEWS_FETCH = 'news.NEWS_FETCH'
-export const NEWS_FETCH_HOTEL = 'news.NEWS_FETCH_HOTEL'
-export const SET_ARTICLE = 'news.SET_ARTICLE'
-export const SET_MENU = 'news.SET_MENU'
-export const NEWS_NULL = 'news.NEWS_NULL'
-export const SET_USER_MENU = 'news.SET_USER_MENU'
-export const NEWS_FETCH_FINISH = 'news.NEWS_FETCH_FINISH'
