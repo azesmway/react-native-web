@@ -99,6 +99,29 @@ export const withRouter = Component => {
   }
 }
 
+export const useWithRouter = props => {
+  const router = useRouter()
+  const navigate = useNavigation()
+  const pathname = usePathname()
+  const search = useGlobalSearchParams()
+  const glob = useGlobalSearchParams()
+  const local = useLocalSearchParams()
+  const location = useAppLocation()
+
+  return {
+    ...props,
+    location,
+    history: router.replace,
+    router: { location, navigate, params: {} },
+    pathname,
+    search,
+    expoRouter: router,
+    globPath: glob,
+    localPath: local,
+    navigate
+  }
+}
+
 export function compilePath(path, options) {
   const cacheKey = `${options.end}${options.strict}${options.sensitive}`
   const pathCache = cache[cacheKey] || (cache[cacheKey] = {})
